@@ -246,6 +246,64 @@ Difficult to estimate without additional clarification on requirements and data 
 
 ---
 
+## Investment Research & Analysis — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Financial Data Warehouse**
+- **Required for:** IR-01, IR-05, IR-06, IR-08, IR-09, IR-11, IR-12, IR-13
+- **Components:** Consensus estimates, historical financials, forward estimates, company fundamentals
+- **Impact:** This is the single most critical dependency. Without comprehensive financial data infrastructure, 8 of 13 IR projects have dramatically increased scope.
+
+**2. Trading/Market Data Infrastructure**
+- **Required for:** IR-05, IR-06, IR-09, IR-11, IR-12, IR-13
+- **Components:** Real-time and historical pricing, trading multiples, portfolio positions, returns data
+- **Impact:** 6 projects require reliable access to market data and trading information.
+
+**3. Document Repository & RAG System**
+- **Required for:** IR-02, IR-03, IR-04, IR-07, IR-08, IR-10
+- **Components:** Research documents, investment memos, expert transcripts, broker research, earnings call transcripts, company filings
+- **Impact:** A centralized, searchable document repository with semantic search is foundational for 6 projects.
+
+**4. Slack Integration Framework**
+- **Required for:** IR-01, IR-02, IR-03, IR-06
+- **Components:** Bot authentication, channel posting, interactive commands, file uploads
+- **Impact:** 4 projects require Slack integration. Building a solid Slackbot framework early reduces duplicate effort.
+
+**5. Internal Knowledge Base (BipSync/Notes)**
+- **Required for:** IR-01, IR-03, IR-08
+- **Components:** Internal research notes, analyst views, proprietary analysis
+- **Impact:** Connecting to internal notes system enables comparison of internal vs. Street views.
+
+**6. Event & Calendar Feed**
+- **Required for:** IR-01, IR-10
+- **Components:** Earnings calendar, macro event monitoring
+- **Impact:** Reliable event detection and scheduling triggers.
+
+### Recommended Implementation Sequence
+
+**Phase 1 — Foundation (High ROI, enables other projects):**
+1. Document Repository & RAG System → Enables IR-02, IR-03, IR-04, IR-07, IR-08
+2. Financial Data Warehouse → Enables IR-01, IR-05, IR-08, IR-09, IR-12
+3. Slack Integration Framework → Reduces overhead for IR-01, IR-03, IR-06
+
+**Phase 2 — Pilot Projects (Test infrastructure):**
+1. IR-01: Earnings Preview Generator (tests financial data + Slack + internal notes)
+2. IR-07: Expert Call Insight Extractor (straightforward, tests document processing)
+3. IR-04: Automated Research Digest (tests document repository, delivers immediate value)
+
+**Phase 3 — Advanced Capabilities:**
+1. IR-08: Investment Memo First Draft (requires mature document repository)
+2. IR-05: Company Comps Generator (requires financial + trading data)
+3. IR-03: Research Document Q&A Bot (aggregates learnings from prior projects)
+
+**Avoid Until Infrastructure Matures:**
+- IR-11: Portfolio Scenario Analyzer (partner/license instead of build)
+- IR-13: Trading Strategy Back-tester (partner/license instead of build)
+- IR-06: Consensus Estimate Change Monitor (significant real-time infrastructure if not hourly/daily)
+
+---
+
 ## Market Intelligence
 
 ### MI-01: Portfolio Company News Monitor
