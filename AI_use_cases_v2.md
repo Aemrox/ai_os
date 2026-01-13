@@ -16,14 +16,14 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 
 **Output:** Earnings preview document posted to relevant Slack channel containing: (1) Consensus estimates for key metrics with recent revision direction, (2) XN view vs. Street (where we differ and why), (3) Key debates to listen for (e.g., "Street expects margin expansion but management has been noncommittal") (4) Management credibility check (did they deliver on last quarter's promises?)
 
-**T-shirt size:** 
-- **Medium to Large** depending on the APIs and interactivity. 
+**T-shirt size:**
+**Medium to Large** — Size depends on API availability and required interactivity.
 
 **Questions:**
-- How do we get the data? Need list of sources - ease of data extraction from sources
-- What are the human in the loop points of interaction? 
-- Do we have standard and consistent templates for what the report looks like
-- Good project for choosing an AI workflow tool
+- Data sourcing: What are the primary data sources, and how accessible are their APIs?
+- What are the human-in-the-loop interaction points?
+- Do standardized report templates exist, or do these need to be developed?
+- This could serve as a pilot project for evaluating AI workflow tools.
 
 ---
 
@@ -34,15 +34,13 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Pre-mortem document delivered to analyst containing: (1) Summary of thesis as understood, (2) Contradictory evidence with source citations and links, (3) Risk factors not addressed in memo, (4) Questions the IC might ask, (5) Historical analogies of similar setups that failed
 
 **T-shirt size:**
-- **Small to Medium** assuming limited external sources (web search) being used to evaluate the memo.
-- Becomes much larger if we assume the same information access as IR-03
-  - In this case it would be more of a feature of IR-03 than a standalone product
+**Small to Medium** — Assumes limited external sources (primarily web search) for evaluation. Size increases significantly if this requires the same comprehensive information access as IR-03, at which point this becomes a feature of IR-03 rather than a standalone product.
 
 **Questions:**
-- What is generally in these memos?
-- **Critical:** What sources would we want to consult to evaluate the memo? 
-- Is slack trigger what we want? Would a tool integrated into an AI chat work? Some workflow questions here around what V1 looks like
-- This will want an evaluation structure as the correct prompt is critical here
+- What content is typically included in these investment memos?
+- **Critical:** What sources should be consulted to effectively evaluate the memo?
+- Workflow considerations: Is Slack the optimal trigger, or would integration into an AI chat interface be preferable? V1 scope needs definition.
+- Prompt engineering will be critical; recommend establishing an evaluation framework to ensure quality.
 
 ---
 
@@ -55,14 +53,14 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Slack response containing: (1) Direct answer to question, (2) Supporting evidence with citations, (3) Links to source documents, (4) Date of most recent relevant information, (5) Follow-up questions to refine if needed
 
 **T-shirt size:**
-**Extra Large** this has the potential to be a long ongoing project as we add functionality and lay out the company knowledge base. We'd want to do this in small, agile iterations so that we can deliver value and refine the image. 
+**Extra Large** — This is an ongoing, iterative project with substantial scope as functionality is added and the company knowledge base is structured. Recommend small, agile iterations to deliver incremental value while refining the implementation.
 
 **Questions:**
-- Same questions here around workflow - Slack integration adds a bit of overhead, we'll want to do it eventually, but having it be uniform with a solid codebase for the slackbot is a solid pre-project. 
-- Lots of questions around what data we want included, and where it all lives. 
-- Are there common, pre-defined questions we want to start with? Could allow us to deliver stepwise iterations that present immediate value as we build out larger functionality. 
-- As mentioned above, many other feature requests could ultimately fall under features of this bot as it would necessitate building out MCP tools, an aggregation of all available data, and a slack bot. 
-- This might be a good project for you and I to sit and break down with a technical spec so we can map out the different things that need to be built out to enable this.  
+- Workflow considerations: Slack integration adds overhead. Consider developing a solid Slackbot codebase as a foundational pre-project before full integration.
+- Data scope and architecture: What data sources should be included, and where does this data currently reside?
+- Are there common, high-value questions that could define an initial MVP? Starting with predefined queries would enable stepwise delivery of immediate value.
+- Many other use cases could ultimately become features of this bot, as it necessitates core infrastructure: MCP tools, comprehensive data aggregation, and Slack integration.
+- Recommend collaborative technical specification session to map dependencies and define phased implementation.  
 
 ---
 
@@ -75,12 +73,11 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Personalized email to each analyst containing: (1) Priority reads with one-sentence summaries, (2) Secondary reads organized by ticker, (3) "You might have missed" section for tangentially relevant items, (4) Direct links to full documents
 
 **T-shirt size:**
-- **Small** if this works off of established feeds without a ton of customaization
-- **Medium to Large** if we want deep ongoing customization and feedback, alongside more proactive research being done
+**Small** if leveraging established feeds with minimal customization. Escalates to **Medium to Large** if requirements include deep ongoing customization, feedback mechanisms, and proactive research capabilities.
 
 **Questions:**
-- Highly dependent on the breadth and variety of research sources. If this is several emails, or subscribed feeds (tickers), this is very simple. If this involves proactive searchcing, it becomes more complex
-- How do we define Analyst domains? How custom do we want this? The ability to add company names, fields, or are we going to essentially hand write a feed for every analyst?
+- Scope is highly dependent on research source breadth and variety. Aggregating established email subscriptions or ticker feeds is straightforward; proactive search functionality increases complexity substantially.
+- How are analyst domains defined? What level of customization is required—simple company/ticker lists, or fully customized feeds per analyst?
 
 ---
 
@@ -93,15 +90,13 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Excel file (maybe dashboard?) containing: (1) Formatted comp table with peers, (2) Trading multiples (current, NTM, historical range), (3) Growth and margin metrics, (4) Data footnotes with pull dates, (5) Suggested additions/removals based on AI peer analysis
 
 **T-shirt size:**
-- Very hard to estimate, lots of underlying tools to build
-- From scratch this is **Large to Extra Large**
-- As an additional feature assuming we build out solid underlying financial data and trading data tools, this drops to a **Medium**
+**Large to Extra Large** if building from scratch with custom underlying tools. Reduces to **Medium** if solid financial data and trading data infrastructure already exists.
 
 **Questions:**
-- Need to see someone's workflow on this before I can get a good idea of how complex this is. 
-- Since this is something with a more "correct" and less subjective answer, we will want a solid evaluation framework here to ensure we're getting quality responses, ups the estimate a bit
-- How consolidated and available the financial data is becomes a factor - but again one that is solved by a comprehensive data warehouse
-  - There are some other hidden tools here that need to be built out - were pulling and assembling financial and current trading data, that will be useful for several projects
+- Workflow observation needed: Require walkthrough of current analyst workflow to accurately assess complexity.
+- Quality assurance: Given the objective nature of this output, recommend establishing a robust evaluation framework to ensure accuracy.
+- Data infrastructure: Scope depends on consolidation and availability of financial data. A comprehensive data warehouse would address this dependency and provide reusable infrastructure for multiple projects.
+- Hidden dependencies: This project requires tools for pulling and assembling financial and trading data that will have broader utility across other use cases.
 
 ---
 
@@ -114,13 +109,12 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Alert for material changes containing: (1) Ticker and metric changed, (2) Old vs. new consensus, (3) Which analysts revised and direction, (4) Likely catalyst (linked to recent news if identifiable), (5) Historical context (is this analyst typically early/accurate?). Daily summary email with all changes.
 
 **T-shirt size:**
-- Hard to evaluate as an individual project without answering some questions
+Difficult to estimate without additional clarification on requirements and data sources.
 
 **Questions:**
-- Out of my depth a little on the process here, makes it hard to evaluate:
-  - Is this trading data? Analyst reports? Both point to underlying features (realtime aggregation of financial and analyst reports, plus understanding trading data)
-- Realtime is a large stepup in complexity, it means a persistant server and deploying a service. Even scheduling that to hourly or every X minutes drops the complexity. 
-- Feels very similar to automated research digest, unless I'm missing a critical difference. Could likely be seen as a feature. 
+- Data source clarification needed: Does this use trading data, analyst reports, or both? Either option suggests dependencies on underlying infrastructure (real-time aggregation of financial data, analyst reports, and trading data).
+- Real-time vs. scheduled: Real-time monitoring significantly increases complexity, requiring persistent server infrastructure and service deployment. Reducing to hourly or periodic scheduling substantially decreases scope.
+- Overlap with IR-04: This appears functionally similar to the Automated Research Digest. Clarify differentiating requirements, or consider implementing as a feature of IR-04. 
 
 ---
 
@@ -131,14 +125,12 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Process:** AI reads expert transcript and extracts: key claims with confidence level, data points cited, areas of expertise validation, and potential biases. Compares expert's view against other experts on same topic. Cross-references against XN's internal thesis.
 
 **T-shirt size:**
-- **Small** if data is easily accessible, a pretty simple worflow. Larger if we have to do some work cleaning and aggregating data. 
-- **Medium** If we have to do external research to validate expertise. 
-
+**Small** if data is readily accessible with straightforward workflow. Increases if data cleaning and aggregation are required. Escalates to **Medium** if external research is needed to validate expert credentials.
 
 **Questions:**
-- This is an existing feature on many AI companions. 
-- Do we already have transcripts? Is the cross referenced data easily available? 
-- How do we validate expertise? Is there a profile of the expert readily available?
+- Note: This functionality exists in many AI tools currently available.
+- Are transcripts already available in a structured format? Is cross-referenced data easily accessible?
+- Expertise validation: What sources are available to verify expert credentials and background?
 
 ---
 
@@ -151,16 +143,15 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Word document containing: (1) Company overview with key statistics, (2) Industry context and competitive position, (3) Historical financial summary, (4) Valuation analysis with comps, (5) Risk factors from 10-K, (6) Thesis section (placeholder for analyst input), (7) Flagged gaps requiring additional work
 
 **T-shirt size:**
-- An MVP iteration is likely **Medium** but I would want to take extra care with this, as it could lay the foundation for many other products and features.
-- My preference would be to treat this like a **Large** with an extended research phase on existing memos and data sources
+**Medium** for MVP iteration, but recommend treating as **Large** with extended research phase. This project could establish foundational infrastructure for multiple other use cases (IR-02, IR-03) and warrants careful implementation.
 
 **Questions:**
-- I like starting with this one, as it provides a solid base use case for both the devil's advocate and research bot
-- What data and analytics are in the memo template? Will drastically affect the difficulty here - probably need to deep dive
-  - historical financials is a flag that we need to figure out our financial data collection as a piece of thie project
-- If comps are important, then IR-05 is a pre-requisite
-- Are there other human in the loop points besides the thesis? Would we want the thesis ahead of time to make a complete document - or is this entire process prep from the analyst to construct a thesis?
-- Flagging gaps is difficult - need a solid standard of sufficient. Based on need for quality, there is an argument to either train or few-shot prompt with existing investment memos so we can build a solid prompt for "evaluating gaps" 
+- Strategic value: Strong candidate for initial implementation as it provides base infrastructure for both devil's advocate (IR-02) and research bot (IR-03) use cases.
+- Template requirements: What data and analytics are included in the memo template? This will significantly impact scope and requires detailed review.
+- Financial data dependency: Historical financials requirement flags need for comprehensive financial data collection infrastructure.
+- Dependencies: If comps are essential, IR-05 becomes a prerequisite.
+- Human-in-the-loop touchpoints: Beyond the thesis section, what other analyst input points are required? Should the thesis be provided upfront, or is the entire document intended as preparatory material for thesis development?
+- Gap identification: Defining "sufficient" is challenging. Recommend training on or few-shot prompting with existing investment memos to establish quality standards for gap evaluation. 
 
 ---
 
@@ -173,14 +164,12 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Report containing: (1) List of companies passing both filters, (2) Key statistics for each, (3) Relevant transcript excerpts explaining qualitative match, (4) Link to full screen results, (5) Changes versus prior week's screen
 
 **T-shirt size:**
-- There is likely a **Small** V1 if the financial search criteria is well structured and accessible. 
-- This becomes **Large or Extra Large** if the financial search is something we need to custom roll 
-- Size is also directly impacted by our answers on how we maintain the evaluation criteria for keywords in transcripts
+**Small** for V1 if financial search criteria are well-structured and accessible via third-party APIs. Escalates to **Large or Extra Large** if custom data aggregation and filtering is required. Size also depends on approach to maintaining and updating keyword evaluation criteria for transcripts.
 
 **Questions:**
-- Highly dependent on the trading data interfaces and APIs. Converting Natural language to a search is relatively simple if all the parameters are availabl as search from a 3rd party. This gets much more complex if they are not and we are aggregating and filtering the data ourselves.
-- The post screen evaluation is a high touch system, meaning we want lots of evaluations, and a conversation on how we maintain and change keywords and scoring criteria
-- If the output is a report I'm not sure what the "full results" screen looks like or how it differs
+- Trading data interface: Scope heavily dependent on available APIs and interfaces. Natural language to search conversion is straightforward if all parameters are accessible via third-party services; becomes significantly more complex if custom data aggregation is needed.
+- Evaluation maintenance: Post-screening evaluation is iterative and requires ongoing refinement. How will keyword lists and scoring criteria be maintained and updated?
+- Output clarification: What differentiates the summary report from the "full results" screen?
 
 ---
 
@@ -193,11 +182,11 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Risk exposure report containing: (1) Event summary, (2) Portfolio companies with relevant risk factor language (with excerpts), (3) Management commentary on the topic, (4) Position-weighted exposure ranking, (5) Historical examples of similar events and portfolio impact
 
 **T-shirt size:**
-- Assuming a feed of major events - an MVP that just highlights the event, portfolio copmanies with risk - and maybe some citations and reactions aggregated from available sources is doable - I'd say **Medium**
-- Any type of proactive search or news aggregation looks like **XXXL**
+**Medium** if leveraging an existing feed of major events for an MVP that highlights events, identifies portfolio company risk exposures, and aggregates citations and reactions. **XXXL** if proactive event detection and news aggregation are required.
 
 **Questions:**
-- This one is a bit scary, detecting major news events and their impact on the market is a huge existing product space. I'd hesitate to tackle this with any confidence without a feed of big events that we already ingest. 
+- Risk assessment: Event detection and market impact analysis is a mature product category with significant complexity. Strongly recommend leveraging an existing event feed rather than building detection capabilities from scratch.
+- Is there an existing event feed currently ingested that this could build upon? 
 
 ---
 
@@ -210,13 +199,12 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Scenario analysis report containing: (1) Portfolio P&L impact under base/bull/bear for each scenario, (2) Most exposed positions (positive and negative), (3) Factor decomposition of exposures, (4) Hedging suggestions, (5) Historical analogs and actual outcomes
 
 **T-shirt size:**
-- Anyway you slice this, this ranges from **XL to XXXL**
-- If you have an established model you trust, it's still a **Large to XL** just to ensure data, and construct the correct reports
+**XL to XXXL** regardless of approach. Even with an established, validated model, this remains **Large to XL** due to data infrastructure requirements and report construction complexity.
 
 **Questions:**
-- This is beyond the skill of most LLMS, sure they will try, but it won't be worth anything and will be full of hallucinations.
-- This is an ML project, which necessitates a real ML pipeline - making all financial data and data warehouse projects a pre-requisite, as well as adding a true ML model pipeline. 
-- As an ML project, this is terrifying without real expertise. I'd want to purchase a model to do this. 
+- **Critical limitation:** This task exceeds the capabilities of standard LLMs, which will produce unreliable and hallucinated outputs for complex financial modeling.
+- This is fundamentally an ML engineering project requiring a production ML pipeline, comprehensive financial data warehouse, and validated models—not an LLM application.
+- Strong recommendation: Partner with or license from an established provider rather than building from scratch. This requires specialized expertise beyond typical LLM implementation. 
 
 ---
 
@@ -229,13 +217,13 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Formatted QPR data package containing: (1) Performance summary tables, (2) Attribution waterfall, (3) Factor exposure charts, (4) Position-level P&L, (5) QoQ and YoY comparisons
 
 **T-shirt size:**
-- Hard to say, depends on the complexity of the financial analysis tools we'd want to build. 
-- Assuming the financial data is warehoused and easily accesible, we leverage lots of existing analysis tools that suit our purposes, and our custom models are relatively easy to convert into tools (basically a best case scenario) this is **Medium to Large**
+**Medium to Large** in best-case scenario, assuming comprehensive financial data warehouse, available analysis tools, and straightforward conversion of custom models to tools. Scope depends heavily on financial analysis tool complexity.
 
 **Questions:**
-- Full financial data integration is a pre-requisite, that project alone will take a lot of time. 
-- I need to understand a bit more about the underlying financial analysis (as well as what tools are already avaialble), but in general - Math is not the strongsuit of LLMs so we'd want to build tools. 
-- - Need to do some research on charting libraries and which ones produce charts that look good to the investment team - will be some back and forth
+- **Prerequisite:** Comprehensive financial data integration is required before this project can begin.
+- Computational approach: LLMs are not well-suited for mathematical analysis. Recommend building dedicated calculation tools rather than relying on LLM computation.
+- What existing financial analysis tools and libraries are available? Additional discovery needed.
+- Visualization requirements: Research needed on charting libraries that meet investment team standards. Expect iterative refinement.
 
 ---
 
@@ -248,13 +236,13 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 **Output:** Backtest report containing: (1) Strategy P&L over test period, (2) Risk-adjusted returns, (3) Comparison to alternative parameter sets, (4) Statistical significance assessment
 
 **T-shirt size:**
-- Same as IR-11 - ranges from **XL to XXXL**
+**XL to XXXL** — Similar in scope and complexity to IR-11.
 
 **Questions:**
-- This is another ML project, and is a complimentary but equally complex problem to IR-11
-- What detail of strategy are we testing? There is big difference if "If I executed this trade on this date" and a broader strategy that the AI executes. The later makes IR-11 a pre-requisite 
-- The reality is this is so far out of my expertise that I'd hesitate to offer a real estimate without knowing more about how backtesting works
-- There are almost certainly tools out there for this that I would want to study
+- This is an ML engineering project complementary to IR-11 with comparable complexity.
+- Strategy detail requirements: Significant scope difference between simple trade execution analysis ("execute this trade on this date") versus AI-driven strategy execution (which would require IR-11 as prerequisite).
+- Expertise gap: Comprehensive understanding of backtesting methodologies required before providing accurate estimate.
+- Strong recommendation: Research existing backtesting tools and platforms before considering custom development.
 
 ---
 
