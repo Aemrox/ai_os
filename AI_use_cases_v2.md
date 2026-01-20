@@ -315,8 +315,14 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Real-time Slack alerts for high-materiality items. Daily digest email containing: (1) Top stories by position with one-sentence summaries, (2) Sentiment indicators, (3) Stories requiring analyst attention flagged, (4) Coverage gaps (positions with no recent news)
 
 **T-shirt size:**
+**Medium** — Assumes aggregating Bloomberg/FactSet/AlphaSense news feeds. Scope includes: feed normalization, materiality scoring (LLM-based), clustering related stories, delivery formatting.
 
 **Questions:**
+- Output delivery preference will affect scope (email < Slack < dashboard)
+- Materiality scoring requires iterative refinement with user feedback
+- **Dependency:** Same news sources as IR-04 (research digest)
+- Real-time alerts significantly increase complexity; recommend hourly or daily digest for V1
+- **Build vs Buy:** Real-time news monitoring from scratch = XL+. We aggregate existing vendor feeds, not build monitoring infrastructure.
 
 ---
 
@@ -329,8 +335,14 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Weekly competitor briefing per coverage sector containing: (1) Material competitor developments, (2) Hiring trend analysis (who's scaling vs. cutting), (3) Product/strategy shifts, (4) Implications for portfolio companies, (5) Suggested follow-up research
 
 **T-shirt size:**
+**Large** — Multi-source aggregation (news, filings, hiring, patents) with competitive analysis layer. Requires defining competitor mapping per portfolio company.
 
 **Questions:**
+- How are competitors defined? Manual lists per company, or algorithm-based (same sector, business model)?
+- Competitor mapping is non-trivial; this is significant domain modeling work
+- **Dependencies:** Overlaps with MI-01 (news), MI-04 (filings), MI-06 (hiring patterns)
+- Consider as "phase 2" after individual MI projects prove valuable
+- This is essentially an aggregator of multiple MI projects with additional competitive analysis logic
 
 ---
 
@@ -343,8 +355,14 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Daily brief containing: (1) Top industry developments per sector, (2) Emerging themes across stories, (3) Portfolio relevance notes. Weekly synthesis adding: (4) Trend analysis, (5) Data points worth tracking, (6) Suggested deep-dives
 
 **T-shirt size:**
+**Large** — Similar to MI-01 but adds theme identification and cross-story synthesis. Weekly comprehensive synthesis adds significant analytical complexity. This is a hub project that aggregates learnings from other MI projects.
 
 **Questions:**
+- Essentially MI-01 + thematic analysis across stories
+- Theme identification requires sophisticated clustering/LLM analysis
+- **Overlap with MI-01:** Consider if these should be one project with different output formats, or if MI-03 is the "final milestone" after MI-01
+- Weekly synthesis with trend analysis is non-trivial analytical work
+- **Dependency:** Should likely come after MI-01 is proven and stable
 
 ---
 
@@ -357,8 +375,14 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Alerts for material 8-Ks containing: (1) Filing type, (2) Key disclosure summary, (3) Market implications, (4) Link to full filing. Daily digest of all filings with significance scores. Weekly 13-F summary of smart money movements.
 
 **T-shirt size:**
+**Small to Medium** — Assumes Bloomberg/FactSet/Tegus provide SEC filing feeds. Scope is parsing key filing types (8-K, 13-F, Form 4) and scoring significance.
 
 **Questions:**
+- Do existing vendors already provide filing alerts with some analysis?
+- If yes: Small (light processing + formatting)
+- If no: Medium (parsing logic + significance scoring)
+- **Strong candidate for quick win** if vendor feeds exist with basic alerts
+- Verify what level of analysis vendors already provide before sizing definitively
 
 ---
 
@@ -371,8 +395,16 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Alert for significant sentiment shifts containing: (1) Ticker and direction of shift, (2) Volume comparison to baseline, (3) Representative posts driving sentiment, (4) Influential accounts involved, (5) Potential catalyst if identifiable. Weekly social sentiment summary across portfolio.
 
 **T-shirt size:**
+**XL+ to build from scratch (NOT RECOMMENDED)**
+**Medium to Large if integrating existing solution** — Partner with or license sentiment platform (this is an entire company's product)
 
 **Questions:**
+- **Critical: Buy vs build decision**
+- Which social platforms are actually relevant for investment decisions? (Twitter/X, Reddit, StockTwits, LinkedIn, others?)
+- Building sentiment analysis from scratch: XL+ (infrastructure, bot detection, influencer tracking, sentiment models)
+- Integrating existing platform (if one exists in vendor stack): Medium
+- **Recommendation:** Research sentiment vendors (StockTwits API, social data providers) before sizing further
+- **Strong recommendation:** Do NOT build from scratch. Entire companies are built on social sentiment monitoring.
 
 ---
 
@@ -385,8 +417,14 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Weekly hiring intelligence report containing: (1) Net headcount changes by company, (2) Hiring acceleration/deceleration flags, (3) New role types suggesting strategic shifts, (4) Competitive hiring comparison, (5) Employee sentiment trends from Glassdoor
 
 **T-shirt size:**
+**Small** — Assumes Revealera (on vendor list) provides job posting data via API/export. Scope is aggregating data, identifying trends, formatting reports.
 
 **Questions:**
+- Verify Revealera data access and format
+- If Revealera not usable: Need alternative provider (don't scrape job boards ourselves = XL+)
+- **Strong quick win candidate** if data source is accessible
+- Glassdoor sentiment may require separate consideration (API availability?)
+- **Dependency:** Access to Revealera or similar job posting data provider
 
 ---
 
@@ -399,8 +437,94 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Topic-specific tracking report containing: (1) Management quotes on topic by quarter, (2) Tone/substance change flags, (3) Contradictions with prior statements, (4) Accuracy scorecard (did they deliver what they promised?), (5) Red flags for IC discussion
 
 **T-shirt size:**
+**Large** — This is a very complex LLM analysis project. Assumes Tegus/AlphaSense provide earnings call transcripts. Scope includes: extracting commentary by topic, tracking changes over time, flagging contradictions, comparing to actuals. Could be reduced to **Medium** if scope is limited (e.g., focus on subset of topics, remove accuracy scorecard).
 
 **Questions:**
+- **Dependency:** Same transcript access as IR-07 (Expert Call Insight Extractor)
+- Requires sophisticated LLM prompting for topic extraction and contradiction detection
+- Tracking over time requires database/storage of extracted insights
+- Iterative refinement needed for topic definitions and accuracy scorecard
+- Comparing commentary to actual results requires financial data integration
+- Scope complexity: Topic extraction, tone analysis, contradiction detection, results comparison, multi-quarter tracking
+
+---
+
+## Market Intelligence — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. News & Research Feeds (Bloomberg, FactSet, AlphaSense)**
+- **Required for:** MI-01, MI-02, MI-03
+- **Components:** News APIs, feed normalization, deduplication
+- **Impact:** Foundation for all news-based monitoring. Same as IR-04 dependency.
+- **Cross-reference:** IR section infrastructure #3 (Document Repository) overlaps here
+
+**2. Transcript Access (Tegus/AlphaSense)**
+- **Required for:** MI-07
+- **Components:** Transcript API, parsing, storage
+- **Impact:** Same dependency as IR-07
+- **Cross-reference:** IR section infrastructure #3
+
+**3. SEC Filing Access**
+- **Required for:** MI-02, MI-04
+- **Components:** Filing feeds (Bloomberg/FactSet/Tegus), parsing logic
+- **Impact:** Medium complexity if vendor-provided, High if building EDGAR scraper
+
+**4. Alternative Data Integration**
+- **Required for:** MI-06 (Revealera for hiring data)
+- **Components:** Alt data vendor APIs, data normalization
+- **Impact:** Each new alt data source adds integration overhead
+
+**5. Sentiment/Social Data**
+- **Required for:** MI-05
+- **Components:** Social platform APIs or sentiment vendor integration
+- **Impact:** **CRITICAL BUILD VS BUY DECISION** - don't build from scratch
+
+### Cross-Section Dependencies
+
+- **Document Repository (from IR):** MI-07 needs same storage as IR-07
+- **Slack Integration (from IR):** If alerts preferred, reuse IR Slackbot framework
+- **Output Delivery:** Email digest vs Slack vs dashboard affects all MI projects
+
+### Key Observations
+
+**Aggregation Strategy Wins:**
+- All projects sized assuming we aggregate existing feeds, not build monitoring
+- This keeps Small projects at 2 weeks, Medium at 4-8 weeks, Large at 2-4 months
+- Building from scratch would push everything to XL+ (not feasible solo)
+
+**Real-Time Consideration:**
+- None of these projects sized for true real-time (sub-hour latency)
+- Recommend hourly or daily batches for V1
+- If real-time truly required, infrastructure costs increase dramatically
+
+**Data Source Dependencies:**
+- Most projects depend on vendor APIs being accessible and usable
+- Each "if data source doesn't exist" adds 1-2 size levels
+- Verify vendor API access before committing to timeline
+
+**Critical Questions for All MI Projects:**
+1. What's the actual latency requirement? (Real-time vs hourly vs daily)
+2. Output delivery preference? (Email < Slack < Dashboard)
+3. Approximately how many portfolio companies? (15-50 range estimated)
+4. Verify all assumed vendor data sources are accessible via API/export
+
+### Recommended Implementation Sequence
+
+**Quick Wins (if data sources exist):**
+1. **MI-04: SEC Filing Monitor** (Small-Medium) - likely vendor feeds exist
+2. **MI-06: Hiring Pattern Intelligence** (Small) - Revealera on vendor list
+
+**Medium Complexity (after quick wins):**
+3. **MI-01: Portfolio Company News Monitor** (Medium) - foundation for other news projects
+4. **MI-07: Management Commentary Tracker** (Large, or Medium if scope limited) - similar to IR-07
+
+**Higher Complexity (later phases):**
+5. **MI-03: Industry News Synthesizer** (Large) - hub project, builds on MI-01
+6. **MI-02: Competitor Intelligence Tracker** (Large) - aggregates MI-01, MI-04, MI-06
+
+**Evaluate Separately:**
+7. **MI-05: Social Sentiment** (XL+) - requires buy vs build analysis before proceeding
 
 ---
 
