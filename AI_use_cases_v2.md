@@ -539,8 +539,16 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** CIM summary document containing: (1) One-page business overview, (2) Key financial metrics in standard format, (3) Comparison to public comps, (4) Comparison to prior XN deals, (5) Risk factor summary, (6) Flags and questions for further diligence, (7) Recommendation on whether to proceed
 
 **T-shirt size:**
+**Medium to Large** — PDF extraction and parsing is Medium. Comparison logic could push to Large depending on complexity. If comparisons are simple (e.g., "similar revenue range") = Medium. If comparisons require sophisticated matching and analysis = Large.
 
 **Questions:**
+- Do CIMs follow relatively consistent formats, or highly variable? (Variable = more complex parsing)
+- How many private deals evaluated per year? (Affects ROI of automation)
+- **Public comps comparison:** How should this work? Match on sector + size, then pull metrics? Requires financial data warehouse (IR dependency) and matching logic
+- **Historical deal comparison:** Requires structured archive of prior XN deals. Does this exist, or need to be built? (Corporate document history dependency)
+- Are historical deals searchable/structured, or scattered across files?
+- **Scoping option:** Could start as Medium without comparisons (just extraction + summary), then add comparison features in phase 2
+- **Dependency:** Egnyte API, financial data for comps, corporate document archive/history
 
 ---
 
@@ -553,8 +561,15 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Running data room digest containing: (1) New documents summary with key extracts, (2) Checklist completion status, (3) Missing items list, (4) Inconsistencies across documents, (5) Risk factors identified, (6) Questions for management
 
 **T-shirt size:**
+**Large** — Document classification, extraction from various formats (PDF, Excel, Word), cross-document consistency checking, ongoing tracking state. Data rooms can be 100+ documents with high variability.
 
 **Questions:**
+- What's typical data room size? (50 documents vs 500+ significantly affects complexity)
+- Is there a standard diligence checklist? (If yes: Medium-Large. If needs to be developed: Large)
+- Document format variety (PDFs, Excel models, scanned images) all add complexity
+- Cross-document inconsistency detection is sophisticated analysis
+- **Dependency:** Folder monitoring (Egnyte API), document parsing infrastructure
+- **Scoping option:** Could start Medium with just classification + extraction, add consistency checking in phase 2
 
 ---
 
@@ -567,8 +582,17 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Deal comparison report containing: (1) Term-by-term comparison to XN historical average, (2) Valuation metrics vs. comparable deals, (3) Governance terms assessment, (4) Flags for terms outside normal range, (5) Suggested negotiation points
 
 **T-shirt size:**
+**Medium to Large** — If narrow scope based on existing workflow = Medium. Full scope = Large. **However, this is a BUILD VS BUY decision with high hallucination risk.**
 
 **Questions:**
+- **Critical: Build vs Buy.** Platforms like Harvey specialize in legal/deal term analysis. Should we partner/license instead?
+- **Hallucination risk:** Deal terms have serious legal/financial consequences. Errors are high impact. Requires extensive evaluation framework.
+- Is there an existing workflow or checklist that could narrow scope? (e.g., "just flag these 5 specific terms")
+- How many historical private deals exist for comparison? Are they accessible in structured format?
+- Market data comparison: Use PitchBook/Preqin for benchmarks?
+- **Recommendation:** Start with narrow, low-risk scope (e.g., simple valuation metric comparison) before expanding to complex legal terms
+- **Dependency:** Historical deal documents, legal review of outputs, extensive testing before production use
+- If historical deals need digitizing first, add significant time
 
 ---
 
@@ -581,8 +605,16 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Standardized update containing: (1) Key metrics in consistent format, (2) Variance analysis vs. prior period and budget, (3) Trend charts, (4) Flags for metrics outside expected range, (5) Data populated in XN tracking model. Alert if update is overdue.
 
 **T-shirt size:**
+**Medium** — Extracting metrics from unstructured reports, variance calculations, populating templates. Complexity depends on report format consistency.
 
 **Questions:**
+- How many active private portfolio companies? (Affects volume and ROI)
+- Do portfolio companies submit reports in consistent formats, or highly variable? (Variable = more complex extraction)
+- What's the "XN tracking model" - Excel, database, or other system? (Affects integration complexity)
+- Variance analysis requires historical data - where is this stored currently?
+- Chart generation adds some complexity but manageable
+- **Dependency:** Email/document access, tracking model integration, historical performance data
+- **Note:** Unstructured report extraction can be error-prone; needs validation workflow
 
 ---
 
@@ -595,8 +627,121 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Direct answer with supporting data: (1) Answer to specific question, (2) Source document reference, (3) Related context (e.g., if asking about pricing, includes ownership % and current mark), (4) Last update date
 
 **T-shirt size:**
+**Medium** — If PM-04 data standardization pipeline is complete. **Large** if building from scratch without structured data.
 
 **Questions:**
+- **Natural evolution of PM-04:** If we build standardization pipeline in PM-04, this becomes significantly easier
+- **Similarity to IR-03:** This may be a feature/milestone of IR-03 (Research Q&A Bot) rather than standalone project
+- **Key work:** Standardizing deal room and private investment data (done in PM-04 or PM-02)
+- **Sequencing matters:** Size edges toward Medium if PM-04 completed first; Large if starting from unstructured data
+- Are private investment records structured/searchable, or scattered across documents?
+- **Dependency:** PM-04 data pipeline, RAG infrastructure (IR-03), structured private investment archive
+- **Recommendation:** Consider as phase 2 feature after PM-04 proves data standardization
+
+---
+
+## Private Markets — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Document Processing Infrastructure**
+- **Required for:** PM-01, PM-02, PM-03, PM-04
+- **Components:** PDF/Excel/Word parsing, OCR for scanned docs, structured data extraction
+- **Impact:** Foundation for all document-based PM projects. High variability in document formats increases complexity.
+
+**2. Egnyte Integration**
+- **Required for:** PM-01, PM-02
+- **Components:** Folder monitoring, file upload triggers, document access API
+- **Impact:** Enables automated triggers when new documents arrive
+
+**3. Financial Data Access (from IR section)**
+- **Required for:** PM-01 (public comps comparison)
+- **Components:** FactSet/CapIQ for public company metrics
+- **Impact:** Cross-reference to IR Financial Data Warehouse
+- **Cross-section dependency:** IR infrastructure #1
+
+**4. Corporate Document Archive**
+- **Required for:** PM-01, PM-03
+- **Components:** Historical deal documents, term sheets, investment agreements, CIMs
+- **Impact:** Critical for comparison features. If not structured, adds 4-6 weeks to projects requiring this data.
+- **Key question:** Does structured archive exist or need to be built?
+
+**5. Private Company Data (PitchBook/Preqin)**
+- **Required for:** PM-01, PM-03
+- **Components:** Market deal terms, valuation benchmarks, historical private transactions
+- **Impact:** Enables market comparison features
+
+**6. Data Standardization Pipeline**
+- **Required for:** PM-04 (builds this), PM-05 (depends on this)
+- **Components:** Metric extraction, template population, variance tracking, time-series storage
+- **Impact:** PM-04 creates this infrastructure; PM-05 leverages it
+
+**7. RAG Infrastructure (from IR section)**
+- **Required for:** PM-05
+- **Components:** Vector database, semantic search, Q&A interface
+- **Impact:** PM-05 is essentially IR-03 for private markets
+- **Cross-section dependency:** IR infrastructure #3
+
+### Cross-Section Dependencies
+
+- **Document Repository (IR):** PM projects need similar doc processing as IR section
+- **RAG System (IR):** PM-05 directly depends on IR-03 infrastructure
+- **Financial Data (IR):** PM-01 needs public market data for comps
+
+### Key Observations
+
+**Build vs Buy Considerations:**
+- **PM-03 (Deal Terms):** Strong candidate for partnering with platforms like Harvey. High hallucination risk with serious consequences.
+- **PM-02 (Data Room):** Consider if existing due diligence platforms offer better solutions
+- Recommend narrow scope pilots before full builds
+
+**Sequencing Matters:**
+- **PM-04 enables PM-05:** Data standardization pipeline in PM-04 makes PM-05 significantly easier
+- **PM-05 may be feature of IR-03:** Not standalone project, but extension of Research Q&A Bot to private markets data
+- **Corporate document archive is critical:** If doesn't exist, multiple projects (PM-01, PM-03) become significantly more complex
+
+**Document Variability Risk:**
+- Private markets documents (CIMs, data rooms, updates) have high format variability
+- Each format variation adds development time
+- OCR quality for scanned documents can be poor
+- Budget extra time for parsing edge cases
+
+**Critical Questions for All PM Projects:**
+1. How many private deals/portfolio companies? (Affects ROI calculation)
+2. Does structured corporate document archive exist?
+3. What format consistency exists in CIMs, data rooms, portfolio company reports?
+4. Is there existing diligence checklist/workflow we can follow?
+
+### Recommended Implementation Sequence
+
+**Foundation First:**
+1. **Corporate Document Archive** — If doesn't exist, building this unlocks PM-01 and PM-03. Could be Large project itself.
+2. **Document Processing Infrastructure** — Shared across all PM projects
+
+**Quick Win (if data available):**
+3. **PM-04: Update Processor** (Medium) — Builds data standardization pipeline, enables PM-05
+
+**Medium Complexity:**
+4. **PM-01: CIM Analyzer** (Medium-Large) — Start without comparisons (Medium), add comparisons phase 2
+5. **PM-05: Q&A Bot** (Medium) — After PM-04, consider as feature of IR-03
+
+**Higher Complexity:**
+6. **PM-02: Data Room Processor** (Large) — Complex due to document volume and variety
+
+**Evaluate Separately:**
+7. **PM-03: Deal Terms** (Medium-Large) — Build vs buy decision, high hallucination risk. Consider Harvey or similar platform.
+
+### Strategic Notes
+
+**PM Section Maturity:**
+- Private markets projects depend heavily on whether corporate document infrastructure exists
+- If starting from scratch, recommend building document archive as Phase 1 (potentially Large project)
+- Many PM projects are document processing variations - shared infrastructure has high ROI
+
+**Integration with IR Section:**
+- PM-05 should likely be integrated with IR-03 rather than separate bot
+- Financial data needs for PM-01 already covered by IR infrastructure
+- Document processing patterns similar to IR use cases
 
 ---
 
