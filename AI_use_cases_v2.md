@@ -1131,8 +1131,17 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Surveillance report containing: (1) Trades cleared (no issues), (2) Flags requiring review with: trade details, rule triggered, relevant context (meeting, call, etc.), (3) Resolution actions required, (4) Audit trail
 
 **T-shirt size:**
+**Small** if narrow scope (restricted list check only). **Medium to Large** for comprehensive compliance rules. **STRONG BUILD VS BUY RECOMMENDATION.**
 
 **Questions:**
+- **Critical: Build vs Buy.** Compliance surveillance is regulated activity. Existing platforms likely offer better, AI-driven solutions.
+- **Potential small win:** Very simple scope of just clearing trades against basic restricted list = Small
+- **The hard part:** Creating a policy that accurately reflects the complexity of compliance requirements (outside core competency)
+- **Existing compliance software:** What's currently in place? (Charles River, Bloomberg AIM, compliance-specific AI tools)
+- **Compliance-specific AI platforms:** Should evaluate purpose-built tools (e.g., Behavox, Smarsh, ComplyAdvantage, etc.) alongside general platforms
+- **Team already evaluating Harvey** - theme of this section will likely be evaluating products rather than building
+- Full scope with complex rules (MNPI context, pattern detection, multiple data sources): Medium to Large, but likely not strategic to build
+- **Recommendation:** Evaluate existing compliance AI tools before considering custom build. This is outside core competency.
 
 ---
 
@@ -1145,8 +1154,21 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Contract review memo containing: (1) Key terms summary, (2) Deviations from XN standard, (3) Risk assessment, (4) Suggested redlines with rationale, (5) Comparison to similar historical contracts, (6) Recommended negotiation priorities
 
 **T-shirt size:**
+**Medium to Large if building. XL+ for comprehensive solution. STRONG BUY RECOMMENDATION.**
 
 **Questions:**
+- **Critical: Build vs Buy.** Platforms like Harvey specialize in legal contract analysis. This is their core product. Team already evaluating Harvey.
+- **Hallucination risk:** Legal terms have serious consequences. Errors in contract review = liability risk
+- **Hybrid approach possible:** Can build tools on top of purchased solutions to address shortcomings
+  - Example: Build MCP tool to query internal databases and feed context into Harvey (e.g., existing positions, prior contract terms)
+  - Integration layers are Small-Medium projects vs building core analysis (XL+)
+- Does contract playbook exist? How formalized are "standard positions"?
+- How many vendor contracts per year? (Affects ROI)
+- What contract types? (SaaS, data, services - each has different terms to check)
+- Historical contract repository: Does it exist? Is it structured and searchable?
+- **Outside core competency:** Legal contract analysis is specialized domain
+- **Recommendation:** Partner with Harvey or similar legal AI platform, build integration/enhancement tools as needed
+- If building narrow scope (e.g., "just check these 5 specific clauses"): Medium. Full contract analysis: Large to XL.
 
 ---
 
@@ -1159,8 +1181,19 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** For queries: Relevant precedent language with investor/date context. For new letters: Suggested language with sources. Matrix view of which investors have which provisions.
 
 **T-shirt size:**
+**Medium** if RAG infrastructure exists (from IR-03). **Large** if building from scratch.
 
 **Questions:**
+- **Overlap alert:** This overlaps with InvRel-06 (Side Letter Query Bot). Are these the same project or different features?
+- How many side letters exist? Are they currently in structured, searchable format?
+- What's the query volume? (On-demand only, or frequent usage?)
+- **Dependency:** Document repository & RAG system (IR section infrastructure #3)
+- **Similarity to IR-03:** This is essentially IR-03 (Research Q&A Bot) but for side letters
+- **Recommendation:** Consider as feature of IR-03 rather than standalone project
+- Matrix view of provisions by investor requires structured extraction (significant work if side letters not standardized)
+- If building: PDF extraction, provision classification, precedent matching, tracking database
+- **Sequencing:** Should come after IR-03 RAG infrastructure is mature
+- Could also be feature/extension of Harvey if using them for legal documents
 
 ---
 
@@ -1173,8 +1206,18 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** For outgoing: Completed NDA ready for signature. For incoming: Review summary with deviation flags and suggested responses.
 
 **T-shirt size:**
+**Small to Medium** — Template selection and comparison logic. Lower risk than full contract review.
 
 **Questions:**
+- What's the volume? 5 NDAs per day vs per week vs per month significantly affects ROI calculation
+- Do standard NDA templates exist, or need to be created?
+- How many template variations? (one-way, mutual, different industries)
+- Incoming NDA comparison: What specific deviations matter? (confidentiality period, carveouts, scope)
+- **Lower risk than LC-02:** NDAs more standardized, less variability than full contracts
+- **Workflow:** Email trigger requires integration. Form submission simpler.
+- If high volume + standard templates: Small. If moderate volume or more variable: Medium
+- **Dependency:** Template repository, document comparison logic
+- **Entry-level Harvey workflow:** NDA processing is likely a basic feature if already using Harvey for contract review
 
 ---
 
@@ -1185,8 +1228,22 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Footnote suggestions containing: (1) Flagged claims requiring disclosure, (2) Suggested footnote language, (3) Regulatory basis, (4) Prior approved language for similar claims, (5) Items requiring legal judgment
 
 **T-shirt size:**
+**Small to Medium** if narrow scope (e.g., performance claims only). **Medium to Large** if comprehensive regulatory compliance.
 
 **Questions:**
+- **Significant non-engineering work required:**
+  - Compile history of marketing content that needs disclaimers
+  - Create full list of disclaimer types
+  - Document approved language for each type
+  - This setup makes training and evaluation significantly easier
+- What types of marketing content? (fund letters, DDQs, website, presentations, fact sheets)
+- What claim types require footnotes? (performance, track record, team, regulatory status)
+- **Regulatory knowledge base:** Who maintains current requirements? How frequently do rules change?
+- Volume of marketing content needing review? (Daily, weekly, monthly)
+- **Scoping critical:** 80/20 approach works well - focus on most common disclaimer types for small wins
+- **Recommendation:** Start narrow (performance claims = 80% of cases), expand to other types later
+- Human legal review required before distribution (compliance risk)
+- Could potentially be handled by Harvey or compliance-specific AI tools if already using them
 
 ---
 
@@ -1199,8 +1256,19 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** For queries: Relevant provisions with document/section citations. For drafting: Suggested language with precedent sources. Version tracking and amendment summary.
 
 **T-shirt size:**
+**Medium** if RAG infrastructure exists (from IR-03). **Large** if building from scratch.
 
 **Questions:**
+- **Overlap alert:** Very similar to IR-03 (Research Q&A Bot) and LC-03 (Side Letter Repository). Should these be integrated?
+- What fund documents? (PPMs, LPAs, side letters, investor letters, amendments)
+- How many funds? How many historical documents?
+- Are documents searchable now, or scattered across files?
+- **Dependency:** Document repository & RAG system (IR section infrastructure #3)
+- **Similarity to IR-03 and LC-03:** This is another RAG use case for legal documents
+- **Recommendation:** Strong candidate for integration into unified document Q&A system (IR-03) rather than standalone
+- Version tracking adds complexity (need database of amendments and effective dates)
+- Drafting suggestions require historical document corpus for precedent matching
+- Could also leverage Harvey for fund document Q&A if already using them for legal work
 
 ---
 
@@ -1213,14 +1281,133 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Monthly regulatory update containing: (1) New regulations/guidance affecting XN, (2) Policy gaps identified, (3) Recommended policy updates, (4) Compliance calendar, (5) Industry peer responses (where available)
 
 **T-shirt size:**
+**Medium to Large** — Depends on monitoring scope. **Build vs Buy decision** for regulatory intelligence.
 
 **Questions:**
+- **Build vs Buy:** Regulatory monitoring services exist (RIA in a Box, MyComplianceOffice, etc.). Should we partner/subscribe instead?
+- What regulatory bodies/topics? (SEC, FINRA, state regulators, ERISA, etc.)
+- Current regulatory monitoring service? (Many firms already subscribe to regulatory intelligence)
+- How are internal policies currently maintained? Centralized system or scattered?
+- Policy gap detection requires structured policy documentation (does this exist?)
+- Compliance calendar: Who maintains it now?
+- **If building:** Web scraping for regulatory sites, natural language processing for relevance detection, policy comparison logic
+- **If integrating existing service:** Medium (connect feed, build internal policy comparison logic)
+- **If building from scratch:** Large to XL (regulatory intelligence is complex domain)
+- **Recommendation:** Subscribe to regulatory intelligence service, build internal policy gap analysis on top = Medium
+- Compliance-specific AI tools may already offer this functionality
+
+---
+
+## Legal & Compliance — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Document Repository & RAG System (from IR section)**
+- **Required for:** LC-03, LC-06
+- **Components:** Vector database, semantic search, document processing
+- **Impact:** LC-03 and LC-06 are essentially IR-03 for legal documents
+- **Cross-section dependency:** IR infrastructure #3
+- **Recommendation:** Integrate legal document Q&A into IR-03 rather than building separate systems
+
+**2. Legal Document Processing**
+- **Required for:** LC-02, LC-03, LC-04, LC-06
+- **Components:** PDF extraction, clause identification, term extraction, comparison logic
+- **Impact:** Specialized for legal documents (contracts, side letters, NDAs, fund docs)
+- **Hallucination risk:** Legal documents require high accuracy. Errors have serious consequences.
+- **Harvey likely covers this:** If using Harvey for contract review, can leverage for other legal doc processing
+
+**3. Trade Data & Compliance Context**
+- **Required for:** LC-01
+- **Components:** Internal trade data, restricted list, calendar/meeting data, expert call records
+- **Impact:** Cross-references trades with compliance constraints and MNPI context
+- **Cross-section dependencies:** Operations (trade data), Corporate Access (meetings)
+
+**4. Regulatory Intelligence Feed**
+- **Required for:** LC-07
+- **Components:** Regulatory updates, SEC/FINRA guidance, compliance deadlines
+- **Impact:** Foundation for policy monitoring
+- **Build vs buy:** Strong candidate for external subscription service (RIA in a Box, MyComplianceOffice, etc.)
+
+**5. Historical Document Archives**
+- **Required for:** LC-02, LC-03, LC-04, LC-05, LC-06
+- **Components:** Contracts, side letters, NDAs, fund documents, amendments, prior marketing content with approved disclaimers
+- **Impact:** Precedent matching and approved language requires searchable historical corpus
+- **Critical for LC-05:** History of marketing disclaimers significantly reduces implementation complexity
+
+### Cross-Section Dependencies
+
+- **Document Repository (IR):** LC projects heavily depend on IR-03 infrastructure
+- **Trade Data (OF):** LC-01 needs trade tracking from OF section
+- **Meeting/Calendar Data (CA):** LC-01 cross-references corporate access events for MNPI context
+
+### Key Observations
+
+**Build vs Buy Is The Theme:**
+- **LC-02 (Contract Review):** Harvey already being evaluated by team - strong buy recommendation
+- **LC-01 (Trade Surveillance):** Compliance-specific AI tools (Behavox, Smarsh, ComplyAdvantage) likely better than custom build
+- **LC-07 (Policy Monitoring):** Regulatory intelligence services already exist
+- **LC-04 (NDA Processing):** Entry-level Harvey workflow
+- **Theme of this section:** Evaluating products rather than building from scratch
+- **Hybrid approach:** Can build integration tools (MCP tools, data feeds) on top of purchased platforms
+
+**Hallucination Risk High:**
+- All legal document analysis projects (LC-02, LC-03, LC-04, LC-06) have high stakes
+- LLM errors in legal context = liability risk
+- Human legal review mandatory before any automated output is used
+- Extensive evaluation frameworks required
+- **Outside core competency:** Legal/compliance is specialized domain
+
+**Document Repository Overlap:**
+- **LC-03 overlaps with InvRel-06** (Side Letter Query Bot) - same or different?
+- **LC-03, LC-06 should be features of IR-03** rather than standalone projects
+- Consider unified document Q&A system covering: research, side letters, fund documents, contracts
+- Building 3+ separate RAG systems is inefficient
+- Harvey may already provide unified legal document search
+
+**Non-Engineering Work Significant:**
+- **LC-05 (Marketing Footnotes):** Requires compiling history, creating full disclaimer list, documenting approved language
+- This prep work makes implementation significantly easier
+- 80/20 approach works well - focus on most common cases first
+
+**Small Win Opportunities:**
+- **LC-01:** Narrow scope (restricted list check only) = Small
+- **LC-05:** Start with performance claims only (most common 80%) = Small to Medium
+- **LC-04:** If high volume + standard templates = Small (but likely covered by Harvey)
+
+### Critical Questions for All LC Projects
+
+1. **What's the Harvey evaluation status?** Many LC projects may already be covered
+2. **What compliance-specific AI tools exist?** Beyond Charles River/Bloomberg (e.g., Behavox, Smarsh, ComplyAdvantage)
+3. **Do legal document archives exist?** Structured and searchable, or need to be built?
+4. **Volume questions:** NDAs per day/week/month? Marketing content frequency? Contract volume?
+5. **Can LC projects be features of purchased platforms?** Rather than custom builds
+
+### Recommended Implementation Sequence
+
+**Evaluate First (Build vs Buy decisions):**
+1. **Harvey evaluation** — May cover LC-02, LC-03, LC-04, LC-06
+2. **Compliance AI tools** — For LC-01 (trade surveillance)
+3. **Regulatory intelligence services** — For LC-07 (policy monitoring)
+
+**Small Win (if not covered by Harvey):**
+4. **LC-01: Trade Surveillance** (Small for narrow scope) — Restricted list check only
+
+**After Product Evaluation:**
+5. **Build integration tools** (Small-Medium) — MCP tools to connect internal data to purchased platforms
+6. **LC-05: Marketing Footnotes** (Small-Medium) — Start with performance claims, requires non-engineering prep work
+7. **LC-03/LC-06: Legal Document Q&A** (Medium) — If not using Harvey, integrate into IR-03 infrastructure
+
+**Strategic Notes:**
+- **This section is about product evaluation, not building** — Legal/compliance has mature AI solutions
+- **Hybrid approach wins:** Buy platforms, build integration/enhancement tools
+- **Outside core competency:** Legal document analysis is specialized domain
+- **Regulatory risk:** Human review always required, regardless of automation level
 
 ---
 
 ## Investor Relations
 
-### IR-01: LP Communication Drafter
+### InvRel-01: LP Communication Drafter
 
 **Trigger:** Request for routine LP communication (meeting confirmation, update, etc.)
 
@@ -1229,12 +1416,27 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Draft communication containing: (1) Personalized message, (2) Relevant context from relationship history, (3) Appropriate attachments, (4) Suggested follow-up actions
 
 **T-shirt size:**
+**Small** if simple workflow (MCP tool, separate interface). **Medium to Large** if complex integration required.
 
 **Questions:**
+- **Critical: Workflow integration complexity**
+  - Direct Outlook integration? (Capability unknown, potentially complex)
+  - Chrome plugin? (Only works in browser, can be finicky)
+  - MCP tool into Claude or separate interface? (Simplest - user copies draft)
+- **Relationship history data access:**
+  - Where is relationship history stored? (CRM, email archives, meeting notes)
+  - If scattered across sources: need to integrate multiple systems OR bring all data into company DB (significantly increases complexity)
+- What communication types? (meeting confirmations, quarterly updates, ad-hoc responses)
+- How many LPs across all funds?
+- **Balloon factors to Large:**
+  - Complex email workflow integration (Outlook plugin, etc.)
+  - Relationship data scattered across multiple systems requiring integration
+  - Both issues combined = Large
+- **Small scope:** MCP tool or simple interface + relationship history already in company DB or easily accessible
 
 ---
 
-### IR-02: Investor Meeting Prep Generator
+### InvRel-02: Investor Meeting Prep Generator
 
 **Trigger:** Investor meeting scheduled (detected via calendar)
 
@@ -1243,12 +1445,25 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Meeting brief containing: (1) LP profile and relationship summary, (2) Prior meeting notes and open items, (3) Questions they typically ask with prepared answers, (4) Relevant portfolio updates for their interests, (5) Suggested talking points, (6) Open items to address
 
 **T-shirt size:**
+**Medium** if data accessible. **Large** if data scattered across multiple systems.
 
 **Questions:**
+- **Similarity to AD-01:** Meeting Prep Automator (AD-01) is more general. Is InvRel-02 a specialized version for LP meetings?
+- **Data dependencies:**
+  - Relationship history location? (CRM, email, notes)
+  - Prior meeting notes accessible and structured?
+  - Portfolio allocation data source? (Fund admin, internal tracking)
+  - Where are "questions they've asked" tracked?
+- How many LP meetings per quarter/year?
+- Calendar integration: Outlook, Google Calendar?
+- **If all data in unified system:** Medium (aggregation + document generation)
+- **If data scattered:** Need to integrate multiple sources = Large
+- **Dependency:** Similar to InvRel-01, heavily dependent on relationship data infrastructure
+- Prepared answers to likely questions requires access to fund performance data, portfolio information
 
 ---
 
-### IR-03: Investor Letter First Draft
+### InvRel-03: Investor Letter First Draft
 
 **Trigger:** Quarterly schedule or on-demand
 
@@ -1257,12 +1472,25 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Draft letter containing: (1) Performance summary, (2) Portfolio commentary, (3) Market discussion framework, (4) Outlook section (placeholder for PM input), (5) Sections flagged for review
 
 **T-shirt size:**
+**Medium to Large** — Depends on data access and how much portfolio/performance infrastructure exists.
 
 **Questions:**
+- How many funds require investor letters? (Consistent format across funds?)
+- **Data dependencies:**
+  - Performance data source? (Fund admin, internal tracking)
+  - Portfolio positioning/attribution data?
+  - Top contributors/detractors requires position-level performance tracking
+- Historical letter corpus: How many prior letters exist for voice/style learning?
+- **Similar to IR-08 (Investment Memo First Draft):** Both generate structured documents from financial data
+- **Dependency:** Performance data warehouse (similar to IR section needs)
+- If performance/portfolio data well-structured: Medium
+- If data scattered or attribution complex: Large
+- Voice consistency requires analyzing prior letters (straightforward LLM task)
+- Market outlook framework likely needs human input (appropriately flagged as placeholder)
 
 ---
 
-### IR-04: DDQ Response
+### InvRel-04: DDQ Response
 
 **Trigger:** New DDQ received (Excel/Word document)
 
@@ -1271,12 +1499,28 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Pre-populated DDQ containing: (1) Suggested answers for each question, (2) Confidence score per answer, (3) Source of suggested answer (prior DDQ reference), (4) Flags for questions needing fresh response, (5) Data fields updated to current
 
 **T-shirt size:**
+**Medium** if prior DDQ responses in database. **Medium to Large** if need to build response database from scratch.
 
 **Questions:**
+- How many DDQs per year?
+- Are prior DDQ responses currently in a database/searchable format, or scattered across files?
+- **Response versioning and invalidation tracking adds complexity:**
+  - Need system to version responses to common questions
+  - Flag when responses need to be revisited (policy changes, org changes, performance updates)
+  - Detecting stale responses is non-trivial
+- **High risk:** Wrong or outdated information in DDQ = serious consequences with prospective LPs
+- **Requires solid evaluation framework** to ensure accuracy before submission
+- DDQ format variability: Excel vs Word, standardized questions or all unique?
+- What data fields need updating? (AUM, performance, headcount, etc.) - source systems?
+- Question matching is semantic search problem (similar to RAG, but for Q&A pairs)
+- **Dependency:** Prior DDQ archive, current fund data for field updates, response versioning database
+- **Complexity factors pushing toward Medium:** Response invalidation logic, high-risk evaluation framework, versioning system
+- **If response database exists:** Medium (question matching + versioning + data updates)
+- **If building from scratch:** Medium to Large (extract historical responses + versioning system)
 
 ---
 
-### IR-05: Quarterly Cheat Sheet Generator
+### InvRel-05: Quarterly Cheat Sheet Generator
 
 **Trigger:** Monthly/quarterly schedule (after NAV finalization)
 
@@ -1285,12 +1529,26 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** One-page cheat sheet containing: (1) AUM and flow summary, (2) Performance chart and statistics, (3) Top 5 contributors/detractors with brief thesis, (4) Key exposures (sector, geography, factor), (5) Notable position changes
 
 **T-shirt size:**
+**Medium** — Similar to InvRel-03 but simpler output format. Depends on performance/portfolio data infrastructure.
 
 **Questions:**
+- How many funds require cheat sheets?
+- **Data dependencies:**
+  - Performance data (fund admin, internal tracking)
+  - Attribution data for contributors/detractors
+  - Position-level theses (from research notes/BipSync?)
+  - Exposure breakdowns (sector, geography, factor)
+- **Similar to InvRel-03 and IR-12:** All require performance and attribution data
+- Chart generation adds some complexity but manageable
+- One-page format constraint requires thoughtful data prioritization
+- **Dependency:** Performance data warehouse, attribution system, position thesis access
+- If performance infrastructure exists from IR section: Medium
+- If building data pipelines from scratch: Large
+- **Recommendation:** Should come after performance/attribution infrastructure is built
 
 ---
 
-### IR-06: Side Letter Query Bot
+### InvRel-06: Side Letter Query Bot
 
 **Trigger:** Natural language question
 
@@ -1299,12 +1557,23 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Direct answer with: (1) Response to specific question, (2) Supporting detail (LP names, specific language), (3) Related provisions that may be relevant, (4) Caveats or exceptions
 
 **T-shirt size:**
+**Medium** if RAG infrastructure exists. **Large** if building from scratch.
 
 **Questions:**
+- **Critical overlap:** This is the SAME as LC-03 (Side Letter Term Repository). Are these duplicate entries or different features?
+- **Recommendation:** These should be the same project, not separate
+- How many side letters? Currently structured/searchable?
+- **Dependency:** Document repository & RAG system (IR-03 infrastructure)
+- **This is IR-03 for side letters** - same RAG pattern applied to different document type
+- If IR-03 RAG infrastructure exists: Medium (add side letters to corpus)
+- If building from scratch: Large
+- **Sequencing:** Should come after IR-03 is mature
+- Query types: structured lookups ("which LPs have X provision") vs semantic search ("what are our MFN terms")
+- May also be covered by Harvey if using them for legal document work
 
 ---
 
-### IR-07: Investor Data Aggregator
+### InvRel-07: Investor Data Aggregator
 
 **Trigger:** Daily schedule and on-demand
 
@@ -1313,8 +1582,155 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Consolidated investor data containing: (1) Current balances by fund/share class, (2) Transaction history, (3) Private investment allocations, (4) Co-investment positions, (5) Investor-specific reports on demand
 
 **T-shirt size:**
+**Large** — Data reconciliation, warehousing, and dashboard requirement make this substantial. Good project to build foundational infrastructure.
 
 **Questions:**
+- **Super dependent on:** Data location, quality, and how far back it goes
+- **Backfilling critical:** Very limited usefulness if can't backfill historical data. How far back does data need to go?
+- **Dashboard requirement is hard:**
+  - Option 1: Leverage dashboard tooling (Retool, Sigma Computing, tools around chosen data warehouse)
+  - Option 2: Build full server and dashboard framework (significantly increases scope)
+  - Need to explore available tools before committing to custom build
+- **What are the source systems?** (Fund admin, internal records, private investment tracking, co-investment tracking)
+- How many sources need integration? Each source adds complexity
+- **Data reconciliation and warehousing is the scariest bit:** Needs solid foundation, but this is a good project to BUILD that foundation
+- **Not really AI:** This is data engineering and aggregation (traditional ETL), not LLM work
+- How many investors across all funds?
+- **Dependency:** Access to all investor data sources (fund admin APIs, internal databases), historical data for backfill
+- **This is foundational infrastructure** for other InvRel projects (InvRel-01, InvRel-02, InvRel-04 all need this data)
+- **Framing as Large is important** due to data warehousing, reconciliation complexity, and dashboard requirements
+
+---
+
+## Investor Relations — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Investor Data Warehouse (InvRel-07)**
+- **Required for:** InvRel-01, InvRel-02, InvRel-03, InvRel-04, InvRel-05
+- **Components:** Investor records, relationship history, transaction history, balances, allocations, meeting notes, DDQ responses
+- **Impact:** InvRel-07 is FOUNDATIONAL infrastructure that unlocks most other InvRel projects
+- **Size:** Large project itself (data reconciliation, warehousing, dashboard)
+- **Critical for success:** Backfilling historical data is essential for usefulness
+- **This should be built first** before other InvRel projects
+
+**2. Performance & Attribution Data (from IR section)**
+- **Required for:** InvRel-03, InvRel-05
+- **Components:** Fund performance, attribution, AUM trends, top contributors/detractors, exposure breakdowns
+- **Cross-section dependency:** IR Financial Data Warehouse
+- **Impact:** Investor letters and cheat sheets require same performance infrastructure as IR projects
+
+**3. Document Repository & RAG System (from IR section)**
+- **Required for:** InvRel-06 (Side Letter Query Bot)
+- **Components:** Side letter corpus, semantic search, Q&A interface
+- **Cross-section dependency:** IR infrastructure #3
+- **Overlap:** InvRel-06 is the SAME as LC-03 - should be one project, not two
+
+**4. Fund Administration System Access**
+- **Required for:** InvRel-03, InvRel-04, InvRel-05, InvRel-07
+- **Components:** NAV data, investor balances, transaction records, capital flows
+- **Impact:** Most InvRel projects need fund admin data
+
+**5. Dashboard Infrastructure**
+- **Required for:** InvRel-07
+- **Components:** Dashboard framework, reporting tools, data visualization
+- **Build vs buy:** Tools like Retool, Sigma Computing, or data warehouse-native tools vs custom build
+- **Impact:** Significantly affects InvRel-07 complexity
+
+### Cross-Section Dependencies
+
+- **Performance Data (IR):** InvRel-03, InvRel-05 need same infrastructure as IR-12
+- **RAG System (IR):** InvRel-06 should be part of IR-03 unified document Q&A
+- **Side Letters (LC):** InvRel-06 = LC-03, should not be duplicated
+
+### Key Observations
+
+**InvRel-07 Is Foundational:**
+- Large project but unlocks 5+ other InvRel projects
+- Data reconciliation, warehousing, and historical backfill are critical
+- Dashboard requirement adds significant complexity
+- **Recommendation:** Build InvRel-07 first, enables rest of section
+- Consider dashboard tooling (Retool, Sigma) vs custom build
+
+**Workflow Integration Complexity:**
+- **InvRel-01:** Email integration (Outlook plugin, Chrome extension) is complex
+- **Simple approach:** MCP tool or separate interface where user copies draft
+- Complex integration can balloon Small project to Large
+- **Recommendation:** Start simple (MCP tool), add integration later if needed
+
+**High-Risk Projects:**
+- **InvRel-04 (DDQ Response):** Wrong/outdated information = serious consequences with prospective LPs
+- Requires response versioning, invalidation tracking, evaluation framework
+- Human review mandatory before submission
+
+**Data Dependency Theme:**
+- Almost all InvRel projects depend on investor data being accessible
+- If data scattered across multiple systems: projects become significantly harder
+- Investing in InvRel-07 (data aggregation) has high ROI for entire section
+
+**Not Really AI:**
+- **InvRel-07:** Traditional data engineering and ETL, not LLM work
+- **InvRel-01, InvRel-03:** Document drafting (straightforward LLM application)
+- **InvRel-04:** Q&A matching with versioning logic (hybrid)
+
+### Critical Questions for All InvRel Projects
+
+1. **Where is investor relationship data currently stored?** (CRM, email, meeting notes, scattered)
+2. **How far back does historical data need to go?** Can we backfill?
+3. **Fund administration system and API access?**
+4. **How many LPs across all funds?**
+5. **What's the volume?** (LP meetings, DDQs, communications per month)
+6. **Dashboard tooling preference?** (Retool, Sigma, custom, data warehouse-native)
+
+### Recommended Implementation Sequence
+
+**Foundation First (Large but unlocks others):**
+1. **InvRel-07: Investor Data Aggregator** (Large) — Build investor data warehouse, enables InvRel-01, InvRel-02, InvRel-04
+   - Evaluate dashboard tooling options (Retool, Sigma, etc.)
+   - Focus on historical data backfill
+   - Data reconciliation framework
+
+**After InvRel-07 Infrastructure:**
+2. **InvRel-01: LP Communication Drafter** (Small with simple workflow) — MCP tool approach first
+3. **InvRel-04: DDQ Response** (Medium) — Build response versioning system, evaluation framework
+4. **InvRel-02: Meeting Prep Generator** (Medium) — Leverages InvRel-07 data
+
+**After Performance Infrastructure (from IR section):**
+5. **InvRel-05: Quarterly Cheat Sheet** (Medium) — Requires performance/attribution data
+6. **InvRel-03: Investor Letter Draft** (Medium-Large) — Comprehensive performance data needed
+
+**After IR-03 RAG Infrastructure:**
+7. **InvRel-06: Side Letter Query Bot** (Medium) — Add side letters to IR-03, not standalone project
+   - **Critical:** Confirm this isn't duplicate of LC-03
+
+### Overlap Alert: Duplicate Projects
+
+**InvRel-06 = LC-03:**
+- Both are "Side Letter Query Bot" / "Side Letter Term Repository"
+- Should be ONE project, not two separate entries
+- Recommend consolidating in final analysis
+
+**InvRel-02 similar to AD-01:**
+- InvRel-02: Investor Meeting Prep (specialized for LPs)
+- AD-01: Meeting Prep Automator (general purpose)
+- Consider if InvRel-02 is specialized version of AD-01
+
+### Strategic Notes
+
+**This Section is Data-Heavy:**
+- Success hinges on quality of investor data aggregation (InvRel-07)
+- Most projects are straightforward once data infrastructure exists
+- Without InvRel-07, projects range Medium to Large. With it: Small to Medium
+
+**Dashboard Tooling Decision is Critical:**
+- InvRel-07 dashboard requirement is significant complexity driver
+- Evaluate tools (Retool, Sigma Computing, Looker, Tableau) before committing to custom build
+- Tool choice affects multiple projects across sections (IR-12, OF-02, AD-04)
+
+**Low AI Complexity, High Data Engineering:**
+- Most InvRel projects are document drafting or data aggregation
+- Real complexity is data engineering (InvRel-07), not AI/LLM
+- Focus on data infrastructure first, LLM applications are straightforward
 
 ---
 
@@ -1329,8 +1745,19 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Event record containing: (1) Structured event details, (2) Coverage analyst match, (3) Relevance score based on portfolio/coverage, (4) Calendar invitation draft, (5) Conflict check against existing calendar
 
 **T-shirt size:**
+**Small** for MVP. **Medium** if building proper foundation for downstream projects or if data intake is complex.
 
 **Questions:**
+- How many corporate access emails per week/month?
+- **MVP = Small:** Email parsing with template extraction, analyst coverage lists, calendar as storage
+- **Balloon to Medium if:**
+  - Building structured event database foundation for CA-02, CA-03, CA-05 (not just calendar-based)
+  - Data intake more complicated than "we get an email" (pulling from company websites, sell-side platforms, multiple sources)
+- **Analyst matching MVP:** "Industry and company" lists per analyst keeps this simple
+- **Email access workaround:** Specific email address that gets copied on messages (avoids complex inbox API integration)
+- **Can use intermediate source:** Outlook calendar as structured data store for MVP
+- **Dependency:** Email forwarding setup, analyst coverage lists (simple spreadsheet/DB), calendar integration
+- **Foundation for other CA projects:** CA-02, CA-03, CA-05 build on structured event records
 
 ---
 
@@ -1343,8 +1770,21 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Calendar events properly routed with: (1) Event on correct analyst calendar, (2) Catalyst context included, (3) RSVP tracking
 
 **T-shirt size:**
+**Small to Medium** — Adding events to calendar is Small. Conflict management is core complexity driver.
 
 **Questions:**
+- What calendar system? (Outlook, Google Calendar)
+- How are analyst coverage assignments maintained?
+- What's the "catalyst calendar"? Where does it live? How to integrate?
+- **Adding events to calendar: Small and straightforward**
+- **Managing conflicts: Core complexity driver, getting into dangerous territory outside of core competency**
+  - Simple alert for conflicts: Small
+  - Intelligent alternative suggestion and automated conflict resolution: Medium (calendar management logic is complex)
+- RSVP tracking: Manual (analysts respond), automated, or hybrid?
+- How many analysts? (Affects routing complexity)
+- **Dependency:** CA-01 event records, calendar API access, analyst coverage mapping, catalyst calendar integration
+- If just routing + conflict alerts: Small
+- If intelligent conflict management + RSVP automation: Medium
 
 ---
 
@@ -1357,8 +1797,20 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Forward calendar containing: (1) Predicted events by company, (2) Confidence levels based on historical consistency, (3) Suggested RSVP timing, (4) Gaps in coverage access, (5) Broker relationship opportunities
 
 **T-shirt size:**
+**Small** for basic recurring event alerts. **Medium** for full forecasting. **Adjacent to core competency.**
 
 **Questions:**
+- How many years of historical corporate access data exists?
+- **Dependency:** Requires CA-01 structured event records over time (need historical backlog)
+- **Scoping matters:**
+  - Simple: Alert list of recurring conferences and meetups = Small
+  - Complex: Predictive pattern detection for company-specific timing = Medium
+- Pattern detection: Recurring conferences are straightforward (same event, same time each year). Company-specific timing requires more analysis.
+- Gap analysis: What counts as a "gap"? (Haven't met with company in 6 months? No access to key competitor?)
+- Broker relationship opportunities: Requires broker tracking (related to CA-04)
+- **Adjacent to core competency:** Forecasting/predictive analytics is outside main AI/LLM expertise
+- **Build vs Buy:** Corporate access management platforms may already offer this functionality
+- **Recommendation:** Start with simple recurring conference alerts (Small), evaluate ROI before expanding to full forecasting
 
 ---
 
@@ -1371,8 +1823,23 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Broker scorecard containing: (1) Commission spend by broker, (2) Corporate access events attended, (3) Research consumption metrics, (4) Event fill rate (requested vs. allocated), (5) ROI ranking, (6) Negotiation recommendations
 
 **T-shirt size:**
+**Medium** — Data aggregation from multiple sources with analytical layer. ROI calculation logic adds complexity.
 
 **Questions:**
+- How is commission spend currently tracked? What system?
+- How many broker relationships?
+- **Data sources need integration:**
+  - Commission data (where does this live?)
+  - Corporate access events (from CA-01)
+  - Research consumption (how is this tracked? Downloads, reads?)
+  - Event requests vs. allocations (manual tracking or system?)
+- **Not AI:** This is data aggregation and analytics (traditional reporting/BI)
+- ROI ranking: What's the formula/methodology? (Subjective scoring or objective metrics?)
+- "Quality" assessment of corporate access: How to quantify? (Analyst feedback, meeting outcomes?)
+- **Dependency:** Commission tracking system, CA-01 event data, research consumption logs
+- If data sources accessible and ROI logic straightforward: Medium
+- If data scattered or complex "quality" assessment logic: Could push toward Large
+- **Related to CorpAxe:** Finiato (CorpAxe) on vendor list - is broker management already tracked there?
 
 ---
 
@@ -1385,8 +1852,161 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Corporate access report containing: (1) Events attended by analyst/sector, (2) Allocation rates by bank, (3) Coverage gaps (companies without recent access), (4) Utilization trends, (5) Planning recommendations
 
 **T-shirt size:**
+**Small to Medium** — Report generation from structured event data. **Workflow observation recommended.**
 
 **Questions:**
+- **Critical: Observe existing workflow** to understand what reports are actually needed and how data is used
+- **Observation benefits:**
+  - Identify basic non-AI automations that could save time
+  - Help define the data model for CA-01 (what fields/structure are most useful)
+  - Understand what analytics are actually valuable vs. theoretical
+- **Dependency:** Requires CA-01 event tracking with historical data
+- **Not AI:** This is reporting and analytics (traditional BI/data visualization)
+- **Overlap with CA-04:** Both generate broker/corporate access analytics. Are these separate or consolidated?
+- Coverage gap definition: What qualifies as a "gap"?
+- If CA-01 provides clean structured data + workflow observed: Small
+- If data quality issues or complex analytics requirements: Medium
+- **Could be feature of CA-04** rather than standalone report
+
+---
+
+## Corporate Access — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Structured Event Database (CA-01)**
+- **Required for:** CA-02, CA-03, CA-04, CA-05
+- **Components:** Event records (company, date, location, bank, format), analyst assignments, attendance tracking, RSVP status
+- **Impact:** CA-01 is FOUNDATIONAL - all other CA projects depend on structured event data
+- **Can use intermediate source:** Outlook calendar as structured data store for MVP simplifies database requirement
+- **Historical data important:** CA-03 forecasting requires historical backlog
+- **Workflow observation:** CA-05 reporting can help define ideal data model for CA-01
+
+**2. Calendar Integration**
+- **Required for:** CA-01, CA-02
+- **Components:** Calendar API access (Outlook, Google), multi-user calendar management, conflict detection
+- **Impact:** CA-01 creates events, CA-02 manages routing and conflicts
+- **Complexity driver:** Managing conflicts is outside core competency (calendar management logic)
+
+**3. Analyst Coverage Mapping**
+- **Required for:** CA-01, CA-02
+- **Components:** Industry and company lists per analyst, coverage assignments
+- **Impact:** Enables automated analyst matching for events
+- **Can be simple:** Spreadsheet or basic database sufficient for MVP
+
+**4. Broker Relationship Data**
+- **Required for:** CA-04, CA-05
+- **Components:** Commission spend tracking, event requests/allocations, research consumption metrics
+- **Impact:** Enables broker ROI analysis
+- **Existing tool:** CorpAxe (Finiato) on vendor list - broker management may already be tracked
+- **Question:** What's already in CorpAxe vs needs to be built?
+
+**5. Email Integration**
+- **Required for:** CA-01
+- **Components:** Email parsing, event extraction
+- **Simple approach:** Specific email address that gets copied on corporate access messages (avoids complex inbox API)
+
+### Cross-Section Dependencies
+
+- **Calendar Integration:** Similar needs to InvRel-01, InvRel-02 (meeting scheduling)
+- **Research Consumption Tracking:** CA-04 needs to know which broker research is being read
+
+### Key Observations
+
+**CA-01 Is Foundational:**
+- Small project but unlocks all other CA projects
+- Structured event database enables reporting, forecasting, analytics
+- **Workflow observation for CA-05 can inform CA-01 data model** - consider building CA-01 after observing current workflow
+- Historical data backlog important for CA-03 forecasting
+
+**Mostly Not AI:**
+- **CA-01:** Email parsing (AI), but event extraction fairly straightforward
+- **CA-02:** Calendar management (traditional automation)
+- **CA-03:** Forecasting/pattern detection (adjacent to core competency)
+- **CA-04:** Data aggregation and analytics (traditional BI)
+- **CA-05:** Reporting (traditional BI)
+- Real AI opportunities are limited in this section
+
+**Workflow Observation Important:**
+- **CA-05:** Observe existing reporting workflow to identify:
+  - Basic non-AI automations that save time
+  - What reports are actually valuable
+  - What data model CA-01 should use
+- Don't build reports that won't be used
+
+**Adjacent to Core Competency:**
+- **CA-02:** Managing calendar conflicts is outside main expertise
+- **CA-03:** Forecasting/predictive analytics not core AI/LLM work
+- Both are more calendar management / analytics than AI
+
+**Build vs Buy Considerations:**
+- **CA-03:** Corporate access management platforms may offer forecasting
+- **CA-04/CA-05:** CorpAxe (Finiato) already in use - does it cover broker analytics?
+- Research existing tools before building
+
+**Overlap Alert:**
+- **CA-04 and CA-05:** Both generate broker/corporate access analytics
+- Consider if these should be consolidated into single reporting project
+- CA-04 more broker-focused, CA-05 more event-focused, but significant overlap
+
+### Critical Questions for All CA Projects
+
+1. **What's already in CorpAxe (Finiato)?** Broker management platform on vendor list - what functionality exists?
+2. **Observe workflow first:** What corporate access reports are currently generated manually?
+3. **How many corporate access emails per week/month?** Volume affects ROI
+4. **Historical event data:** How far back? Currently structured or scattered?
+5. **Calendar system and multi-user permissions?**
+6. **Should CA-04 and CA-05 be consolidated?** Significant overlap in analytics
+
+### Recommended Implementation Sequence
+
+**Foundation + Observation:**
+1. **Observe current CA workflow** (CA-05 focus) — Understand reporting needs, inform CA-01 data model
+2. **CA-01: Event Identifier and Tracker** (Small) — Build structured event database
+   - Use email forwarding (not complex inbox API)
+   - Start simple: Outlook calendar as data store for MVP
+   - Analyst matching via simple coverage lists
+
+**After CA-01:**
+3. **CA-02: Calendar Sync and Routing** (Small) — Add events to calendars
+   - Keep simple: routing + conflict alerts (not intelligent conflict management)
+
+4. **CA-05: Corporate Access Reporting** (Small-Medium) — Basic reporting after observing workflow
+   - Leverage CA-01 structured data
+   - Focus on automating existing manual reports
+
+**Evaluate First:**
+5. **CA-04: Broker Utilization Analyzer** (Medium) — Check CorpAxe capabilities first
+   - If CorpAxe doesn't cover: build analytics layer
+   - Consider consolidating with CA-05
+
+**Question ROI:**
+6. **CA-03: Corporate Access Forecaster** (Small-Medium) — Adjacent to core competency
+   - If building: start very simple (recurring conference alerts only)
+   - Research existing corporate access management platforms first
+   - May not be worth building beyond basic alerts
+
+### Strategic Notes
+
+**Limited AI Opportunities:**
+- This section is mostly calendar management, data aggregation, and reporting
+- True AI/LLM work limited to email parsing (CA-01)
+- Consider if resources better spent on higher-AI-value projects
+
+**CorpAxe Already Exists:**
+- Finiato (CorpAxe) on vendor list for broker management
+- Research existing capabilities before building CA-04/CA-05
+- May already have reporting that covers these needs
+
+**CA-01 Is Quick Win:**
+- Small project with immediate value (automated event tracking)
+- Enables rest of section
+- Good candidate for early implementation
+
+**Observe Before Building:**
+- CA-05 workflow observation can inform entire CA section
+- Understand what reports/analytics are actually valuable
+- Identify non-AI automations that save time
 
 ---
 
@@ -1401,8 +2021,19 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Meeting brief containing: (1) Participant bios with recent activity, (2) Prior meeting history and notes, (3) Open items from last interaction, (4) Relevant recent news about participants/their company, (5) Suggested agenda or talking points
 
 **T-shirt size:**
+**Medium** — Data aggregation from multiple sources with web search layer. Similar to InvRel-02 but broader scope.
 
 **Questions:**
+- **Similarity to InvRel-02:** Investor Meeting Prep Generator is specialized version for LP meetings. Is AD-01 for all other meetings?
+- **Data sources for participant backgrounds:** LinkedIn, CRM, prior meeting notes, internal records
+- Where are prior meeting notes stored? Structured or unstructured?
+- Recent news: What sources? (Web search, news feeds)
+- Calendar integration: Outlook, Google Calendar?
+- **Dependency:** Calendar access, meeting notes archive, CRM/relationship data, web search capability
+- If meeting notes well-organized and accessible: Medium
+- If data scattered across email/notes/systems: Could push toward Large
+- Web search for recent news adds complexity but manageable
+- **Related to InvRel-02:** Consider if these should share infrastructure
 
 ---
 
@@ -1415,8 +2046,18 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Search results containing: (1) Ranked document list with relevance scores, (2) Preview snippets showing relevant content, (3) Direct links to documents, (4) Related documents that may be relevant
 
 **T-shirt size:**
+**Medium** if RAG infrastructure exists (from IR-03). **Large** if building from scratch.
 
 **Questions:**
+- **This is essentially IR-03 (Research Document Q&A Bot)** - same RAG infrastructure, different scope
+- What's the document repository scope? (Egnyte mentioned - all files, or specific folders?)
+- File count estimate? (Thousands, tens of thousands, hundreds of thousands?)
+- **Dependency:** Document repository & RAG system (IR section infrastructure #3)
+- Slack integration (IR infrastructure #4)
+- If IR-03 RAG infrastructure exists: Medium (expand document corpus, add Slack interface)
+- If building from scratch: Large (vector database, semantic search, document indexing, Slack bot)
+- **Recommendation:** This should be a feature/milestone of IR-03, not standalone project
+- Semantic search with preview snippets is core RAG functionality
 
 ---
 
@@ -1429,8 +2070,20 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Document organization actions: (1) Suggested classification and tags, (2) Recommended folder location, (3) Duplicate detection alerts, (4) Metadata populated, (5) Related documents linked
 
 **T-shirt size:**
+**Small to Medium** as standalone. **Part of larger Document Repository infrastructure (IR-03).**
 
 **Questions:**
+- **This is really a piece of the corporate document store / knowledge project (IR-03)**
+- Not standalone project, but one data source integration for broader RAG infrastructure
+- **Good starting point:** Provides tangible win (organizing Egnyte uploads) while scoping out broader document repository project
+- **Questions help scope document repository:** Need to ask similar questions about each document source we want to integrate
+- What's the document upload volume to Egnyte? (Daily, weekly)
+- Egnyte API: Can it apply tags and move files programmatically, or just suggest?
+- Entity extraction: Companies, deals, investors - requires NER and entity resolution
+- Standard metadata taxonomy: Does it exist or need to be created?
+- Duplicate detection approach?
+- **Dependency:** This is infrastructure that feeds into IR-03, not separate from it
+- **Recommendation:** Build as first milestone of document repository project, not standalone
 
 ---
 
@@ -1443,8 +2096,22 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Tabs for Portfolio Analytics, Fund Performance, Investor Relations, Private Investments, etc. ChatBot direct answers to questions like: (1) "What's our exposure to AI?" (2) "How did we perform vs. benchmark this month?" (3) "Which LPs have redemption notices pending?" (4) "What's the latest on the Grok investment?" Includes supporting data and drill-down links.
 
 **T-shirt size:**
+**Large to XL** — This is a comprehensive BI dashboard + chatbot aggregating all data sources. Very broad scope.
 
 **Questions:**
+- **This is essentially IR-03 + comprehensive dashboard + all data sources integrated**
+- **Extremely broad scope:** Portfolio analytics, fund performance, investor relations, private investments - this touches every section
+- What executive queries are most frequent? Start with those?
+- Dashboard development is Large project itself (similar to InvRel-07 dashboard concerns)
+- **Dependency:** Literally every data source across all sections (positions, performance, investor data, private investments, etc.)
+- Natural language routing: Needs to understand which system to query for each question type
+- Cross-functional synthesis: Combining data from multiple sources for single answer
+- **This should be built LAST** after foundational data infrastructure exists across sections
+- **Recommendation:** Break this into phases:
+  - Phase 1: Basic dashboard with key metrics (Medium-Large)
+  - Phase 2: Add chatbot for specific domain (Medium)
+  - Phase 3: Cross-functional synthesis (Large)
+- **Dashboard tooling decision critical:** Retool, Sigma, Looker, custom build significantly affects scope
 
 ---
 
@@ -1457,7 +2124,182 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Relationship insights containing: (1) XN contacts with relationships to target, (2) Recency and frequency of interaction, (3) Relationship strength score, (4) Mutual connections, (5) Suggested introduction path, (6) Last interaction summary
 
 **T-shirt size:**
+**Large, potentially XL** — Relationship graph is no joke. Complex data access, completeness challenges, but could be unique value-add.
 
 **Questions:**
+- **Relationship graph is complex:** Building and maintaining accurate relationship network is substantial undertaking
+- **Completeness is tough question:** How do you know you've captured all relevant relationships?
+- **What communication systems to analyze?** (Email, calendar, CRM, LinkedIn)
+- **Data access is questionable:**
+  - LinkedIn API access is limited and complex to navigate
+  - Email/calendar access across firm requires permissions, privacy policies
+  - CRM data may be incomplete
+- **Data access would be tough to manage** across multiple sources
+- **Good isolatable project for contractors** — Can be scoped and handed off
+- Relationship strength scoring: What methodology?
+- **Graph database required:** Neo4j or similar for relationship network
+- **Could be fun and unique value-add** if ROI is really there
+- **Privacy considerations** are significant
+- **Dependency:** Email/calendar access, CRM data, potentially LinkedIn (difficult), graph database infrastructure
+
+---
+
+## Administrative & Cross-Functional — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Document Repository & RAG System (from IR section)**
+- **Required for:** AD-02, AD-03
+- **Components:** Vector database, semantic search, document indexing, classification
+- **Cross-section dependency:** IR infrastructure #3
+- **Impact:** AD-02 is essentially IR-03 with broader document scope, AD-03 feeds into document repository
+- **AD-03 as starting point:** Egnyte integration provides tangible win while building broader document infrastructure
+
+**2. Meeting Notes and Relationship Data**
+- **Required for:** AD-01
+- **Components:** Prior meeting notes, participant information, relationship history
+- **Similar to InvRel-02:** AD-01 is general-purpose version of investor meeting prep
+- **Impact:** Meeting prep depends on structured meeting history
+
+**3. Calendar Integration (from IR/CA sections)**
+- **Required for:** AD-01
+- **Components:** Calendar API access, meeting detection, participant extraction
+- **Cross-section dependency:** InvRel-01, InvRel-02, CA-01, CA-02 use similar calendar integration
+- **Impact:** Shared infrastructure across multiple sections
+
+**4. Comprehensive Data Warehouse**
+- **Required for:** AD-04
+- **Components:** All data sources across all sections (positions, performance, investor data, private investments, operations, etc.)
+- **Impact:** AD-04 is aggregation of everything - requires foundational infrastructure from ALL sections
+- **This is the most dependent project in entire analysis**
+
+**5. Dashboard Infrastructure**
+- **Required for:** AD-04
+- **Components:** Dashboard framework, data visualization, web interface, query routing
+- **Cross-section dependency:** InvRel-07 also needs dashboard
+- **Build vs buy:** Retool, Sigma Computing, Looker, Tableau vs custom build
+- **Impact:** Dashboard tooling decision affects multiple projects across sections
+
+**6. Graph Database & Communication Access**
+- **Required for:** AD-05
+- **Components:** Neo4j or similar, email/calendar/CRM access, relationship strength algorithms
+- **Impact:** Unique to AD-05, substantial infrastructure need
+- **Privacy considerations:** Accessing communication patterns across firm
+
+### Cross-Section Dependencies
+
+**AD-02 = IR-03 extension:**
+- Same RAG infrastructure
+- Broader document scope (all Egnyte, not just research)
+- Should be feature of IR-03, not standalone
+
+**AD-03 = Part of IR-03 infrastructure:**
+- Document tagging/classification feeds into document repository
+- First milestone of broader document repository project
+
+**AD-01 similar to InvRel-02:**
+- General meeting prep vs investor meeting prep
+- Consider shared infrastructure
+
+**AD-04 depends on EVERYTHING:**
+- Requires data from IR, MI, PM, OF, LC, InvRel, CA sections
+- Should be built LAST after foundational data infrastructure exists
+
+### Key Observations
+
+**Many Projects Are Extensions of IR-03:**
+- **AD-02:** Enterprise search is IR-03 for all documents
+- **AD-03:** Document tagger is infrastructure feeding IR-03
+- **Recommendation:** Don't build 3 separate systems, integrate into unified document repository
+
+**AD-04 Is Massive in Scope:**
+- Large to XL project aggregating all data sources
+- Requires virtually every other foundational project to be complete first
+- **Break into phases:** Basic dashboard → domain-specific chatbot → cross-functional synthesis
+- Dashboard tooling decision (Retool vs custom) critically affects scope
+- **Build LAST** in implementation sequence
+
+**AD-05 Is Standalone and Speculative:**
+- Large to XL project with unique infrastructure needs (graph database)
+- Privacy and data access challenges significant
+- Could be fun and unique value-add, but question ROI
+- Good isolatable project for contractors if pursued
+- **Build only if strong ROI case**
+
+**Calendar Integration Shared:**
+- AD-01 uses same calendar integration as InvRel-01, InvRel-02, CA-01, CA-02
+- Opportunity for shared infrastructure across sections
+
+**Dashboard Tooling Is Critical Decision:**
+- Affects AD-04, InvRel-07, potentially OF-02
+- Evaluate Retool, Sigma Computing, Looker, Tableau before committing to custom build
+- Tool choice significantly impacts development time and maintenance
+
+### Critical Questions for All AD Projects
+
+1. **Document scope for AD-02/AD-03:** What documents in Egnyte should be included?
+2. **Dashboard tooling decision:** Custom build or leverage existing tools?
+3. **AD-05 ROI:** Is relationship mapping valuable enough to justify Large/XL investment?
+4. **Privacy policies:** What communication data can be accessed for AD-05?
+5. **AD-04 phasing:** What's the MVP? (Focus on specific executive queries first)
+
+### Recommended Implementation Sequence
+
+**Foundation (Part of IR-03 Document Repository):**
+1. **AD-03: Document Tagger** (Small-Medium) — First milestone of document repository
+   - Start with Egnyte uploads
+   - Build classification and tagging infrastructure
+   - Feeds into IR-03 RAG system
+
+**After IR-03 RAG Infrastructure:**
+2. **AD-02: Enterprise Search** (Medium) — Extend IR-03 to all documents
+   - Not standalone, feature of IR-03
+   - Broader document corpus beyond research
+
+**After Meeting Data Infrastructure:**
+3. **AD-01: Meeting Prep Automator** (Medium) — General meeting prep
+   - Consider sharing infrastructure with InvRel-02
+   - Requires structured meeting notes
+
+**Much Later (After Most Other Projects):**
+4. **AD-04: Executive Dashboard** (Large-XL) — Requires all foundational data infrastructure
+   - Build in phases: basic dashboard → domain chatbot → cross-functional
+   - Evaluate dashboard tooling options first
+   - **Build LAST** when data infrastructure mature
+
+**Question ROI First:**
+5. **AD-05: Relationship Mapper** (Large-XL) — Speculative, unique value proposition
+   - Assess ROI before committing
+   - Data access and privacy challenges significant
+   - Could be good contractor project if pursued
+
+### Strategic Notes
+
+**This Section Is About Integration:**
+- AD projects are cross-functional by nature
+- Most are extensions or aggregations of other sections' infrastructure
+- AD-02/AD-03 should be part of IR-03, not separate
+- AD-04 aggregates everything
+
+**AD-04 Is The Ultimate Dashboard:**
+- Requires virtually all other infrastructure to be valuable
+- Don't build early - wait until foundational data exists
+- Consider if simpler domain-specific dashboards provide more value
+- Dashboard tooling decision affects multiple projects
+
+**AD-05 Is High-Risk, High-Reward:**
+- Relationship mapping could be unique differentiator
+- Large/XL scope with data access challenges
+- Privacy considerations significant
+- Only build if strong ROI case can be made
+
+**Document Repository Is Central:**
+- AD-02 and AD-03 both relate to document management
+- Should be integrated with IR-03 document repository
+- Don't duplicate infrastructure
+
+**Calendar Integration Opportunities:**
+- Multiple sections need calendar integration (AD-01, InvRel-01/02, CA-01/02)
+- Build shared calendar framework once, reuse across sections
 
 ---
