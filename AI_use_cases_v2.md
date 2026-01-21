@@ -756,8 +756,19 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Draft expense report containing: (1) Categorized expenses with receipts attached, (2) Business purpose (auto-populated from calendar where possible), (3) Policy compliance flags, (4) Missing receipts list, (5) Ready for employee review and submission
 
 **T-shirt size:**
+**Medium to XL** — Highly dependent on data access and what gap exists in current expense infrastructure.
 
 **Questions:**
+- **Critical: What's missing from current expense tool?** Modern platforms (Brex, Airbase, Ramp) already do most of this
+- What expense management system is currently used, and what feature gap does this solve?
+- **If building layer on top of existing platform:** Medium (API integration, calendar cross-reference, enhanced categorization)
+- **Balloon factors that push to XL:**
+  - No credit card/expense API access (need manual data collection)
+  - Irregular/inconsistent receipt formats (OCR quality issues)
+  - Complex policy rules requiring custom logic
+  - Building entire expense infrastructure from scratch (not recommended)
+- **Most likely scope:** AI-enhanced categorization + calendar business purpose auto-fill on top of existing expense tool = Medium
+- **Clarify:** Is this about auto-filling business purpose from calendar (Medium), or building full expense system (XL+)?
 
 ---
 
@@ -770,8 +781,17 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Monthly spend report containing: (1) Spend by category with trends, (2) Top vendors with YoY comparison, (3) Budget variance analysis, (4) Anomaly flags (unusual spending patterns), (5) Consolidation opportunities (multiple vendors for same service), (6) Contract renewal calendar
 
 **T-shirt size:**
+**Medium to Large** — Basic analysis (spend by category, trends, budget variance) = Medium with good data access. Full scope with consolidation opportunities + renewal calendar = Large.
 
 **Questions:**
+- What accounting/ERP system? (QuickBooks mentioned for Mgmt Co - API access?)
+- **Scoping decision:** Start with basic analytics (Medium, good win) or full feature set (Large)?
+- Full scope features that add complexity:
+  - Consolidation opportunities (requires vendor matching logic across categories)
+  - Contract renewal calendar (separate integration with contract management)
+  - Each additional feature adds 1-2 weeks
+- **Recommendation:** Phase 1 = Medium (basic analytics), Phase 2 = add consolidation/renewals
+- **Dependency:** Accounting system API, budget data access
 
 ---
 
@@ -784,8 +804,17 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Close package containing: (1) Recurring entries posted, (2) Accrual calculations with support, (3) Reconciliation templates populated, (4) Unusual balance flags, (5) Close checklist progress, (6) Variance analysis vs. prior month
 
 **T-shirt size:**
+**TBD - Requires workflow observation first** — Highly dependent on existing workflows and systems. Likely better to build targeted tools for specific pain points rather than full automation.
 
 **Questions:**
+- **Critical: Observe existing month-end close workflow** — What are the actual time-intensive, repetitive steps?
+- What accounting system is used? What capabilities does it already have?
+- Are there existing tools/systems that could be leveraged better?
+- **Recommendation:** Workflow analysis first, then identify specific automation opportunities
+- Building full close automation from scratch = Large to XL (not recommended)
+- **Better approach:** Small/Medium targeted tools for specific bottlenecks (e.g., "automate accrual calculation for X" vs "automate entire close")
+- **Example targeted wins:** Template-based entry generation (Small), variance flag automation (Small), checklist tracking (Small)
+- Full scope as described = overly ambitious without understanding current state
 
 ---
 
@@ -798,8 +827,16 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Draft budget package containing: (1) Historical spending by category with trend analysis, (2) First-pass budget by cost center using defined assumptions, (3) YoY variance analysis with drivers, (4) Known commitments and step-changes itemized, (5) Areas flagged for management input (discretionary spend, new initiatives), (6) Comparison to prior year budget vs. actual performance
 
 **T-shirt size:**
+**Medium** if directly follows OF-03 (can leverage infrastructure). **Large** if standalone due to additional dependencies.
 
 **Questions:**
+- **Sequencing matters:** Much easier if OF-03 data access and infrastructure already built
+- **Similar to OF-03:** Observe existing budget workflow first. Where do current tools fall short?
+- What budgeting software/process is currently used? This functionality likely exists in existing tools.
+- **Data requirements:** Need sufficient historical data to calculate trend lines
+- **Dependency:** Heavily overlaps with OF-02/OF-03 data access and accounting system integration
+- **Recommendation:** Evaluate existing budgeting tools or targeted small fixes before committing to full build
+- **Note:** Somewhat adjacent to core expertise - consider if this is strategic vs buying better budgeting software
 
 ---
 
@@ -812,8 +849,16 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Fee package containing: (1) Fee calculations by fund and investor, (2) Supporting detail and methodology, (3) Side letter adjustments applied, (4) Comparison to prior period, (5) Fee notices ready for distribution, (6) Audit trail documentation
 
 **T-shirt size:**
+**Small to Medium** — **Note: This is a script/tool, not AI.** Deterministic math calculation, LLMs are not reliable for basic math. Best case: well-structured data from previous projects, simple script that produces verifiable output.
 
 **Questions:**
+- **Not an AI problem:** This is traditional scripting/calculation logic
+- Are fee calculations currently in Excel? Can logic be directly translated to script?
+- How many funds? How many investor-specific side letter variations?
+- **Accuracy critical:** Fee miscalculations have serious investor relations consequences
+- **Required:** Solid audit trail for human review before distribution
+- **Dependency:** Well-structured data (AUM/NAV, side letter terms), existing calculation logic documented
+- If data well-structured from OF-03/OF-04: Small. If data scattered/messy: Medium
 
 ---
 
@@ -826,8 +871,17 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Incentive fee package containing: (1) Fee calculations by investor with performance detail, (2) High water mark tracking (prior HWM, current NAV, accrued catch-up), (3) Hurdle rate calculations where applicable, (4) Side letter adjustments applied (rate reductions, modified terms), (5) Crystallization schedule and timing, (6) Comparison to prior period and year-to-date accrual, (7) Audit trail with methodology documentation
 
 **T-shirt size:**
+**Medium** — **Also a script/tool, not AI.** More complex than OF-05 due to HWM tracking, crystallization logic, and loss carryforward. Deterministic calculations.
 
 **Questions:**
+- **Not an AI problem:** Traditional scripting with state management (HWM tracking over time)
+- More complex than OF-05: High water mark persistence, crystallization timing, loss carryforward logic
+- Are these calculations currently in Excel? How complex is the logic?
+- How many investor-level variations? (Each side letter variation adds complexity)
+- **State management:** Need to track HWM, accruals, carryforward across periods
+- **Dependency:** Similar to OF-05 but needs historical performance data, HWM tracking database
+- Can leverage OF-05 infrastructure for side letter handling
+- **Critical accuracy:** Human review mandatory before distribution
 
 ---
 
@@ -840,8 +894,19 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** For queries: Direct answer with lot location, cost basis, holding period status, and basket assignment. For reporting: (1) Tax lot inventory by basket with acquisition dates and cost basis, (2) Holding period status (short-term vs. long-term) by lot, (3) Realized gains/losses by basket with tax character, (4) Unrealized gain/loss summary by basket, (5) Wash sale exposure flags
 
 **T-shirt size:**
+**Small to Medium** IF Enfusion data infrastructure already exists. **Medium to Large** if building data pipeline from scratch.
 
 **Questions:**
+- **Major dependency:** Regular Enfusion API access + structured data storage is itself a decent-sized project
+- **Enfusion data infrastructure** is a core dependency across multiple OF projects - should be built as foundational infrastructure
+- If data pipeline exists: Building query layer = Small to Medium
+- **Complexity factors pushing toward Medium:**
+  - Natural language query over financial data (not trivial)
+  - High-risk information requiring evals and validation
+  - Data lineage needed (how did we get to this calculation?)
+  - Accuracy critical for tax reporting
+- **Recommendation:** Build Enfusion data infrastructure first (separate foundational project), then this becomes simpler
+- Query interface could be hybrid: structured search + optional NL for user-friendliness
 
 ---
 
@@ -854,8 +919,14 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Cash summary for DL containing: (1) Total cash by currency and account type, (2) Comparison to prior day and expected, (3) Discrepancy flags, (4) Large movements highlighted, (5) Liquidity availability summary
 
 **T-shirt size:**
+**Likely Small** — Automating a well-established process. Observe current workflow first to confirm.
 
 **Questions:**
+- **Not AI:** Data aggregation + variance calculation (traditional script)
+- **Observe existing process first** to understand current workflow and confirm automation scope
+- Likely well-established process, automating = Small, but confirm assumptions
+- Data sources: QuickBooks for Mgmt Co, what for KFO? (Prime broker, custodian APIs?)
+- **Dependency:** Accounting system access, possibly Enfusion or custodian APIs
 
 ---
 
@@ -868,8 +939,15 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Capital flows report ready for email distribution containing: (1) Summary table showing inflows, outflows, and net flows by fund, (2) Detailed subscription schedule with investor name, amount, series/tranche, and notes, (3) Detailed redemption schedule with investor name, net amount, series/tranche, and notes, (4) Transfer schedule showing series transfers and account movements, (5) Comparison to prior month and YTD cumulative flows
 
 **T-shirt size:**
+**Small to Medium** — Report generation from investor transaction data. Small if fund admin system has accessible API. Medium if data scattered across systems.
 
 **Questions:**
+- **Not AI:** Data aggregation and report formatting (traditional script)
+- What fund admin system(s) used? API access?
+- Is investor transaction data in single system or multiple sources?
+- Report format: Email (PDF/Excel) or dashboard?
+- **Dependency:** Fund admin system access, investor records database
+- Similar pattern to OF-08 - likely established process, automation straightforward
 
 ---
 
@@ -882,8 +960,17 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Daily Slack post to operations channel containing: (1) Reconciliation summary (matched vs. breaks), (2) New breaks identified with details and suggested resolution, (3) Open items tracker showing owner, age, and status, (4) Unsettled trades list with expected settlement dates, (5) Escalation flags for items exceeding age thresholds, (6) Week-over-week trend on break volume
 
 **T-shirt size:**
+**Medium** — Assumes "automated feeds" already exist. Data comparison, break categorization, aging/tracking logic, Slack integration.
 
 **Questions:**
+- **Not AI:** Data reconciliation logic, break detection, aging tracking (traditional scripting)
+- **Sequencing note:** If robust internal trade tracking infrastructure is built, this becomes easier as an additional feature of that system
+- What are the "automated feeds"? Where do they come from?
+- Internal systems vs counterparties: What systems need reconciliation?
+- Break categorization: Are rules well-defined or need to be developed?
+- State management: Tracking open items over time requires persistent storage
+- **Dependency:** Automated feed infrastructure, internal trade tracking, Slack integration, persistent storage
+- "Suggested resolution" could use LLM for intelligent suggestions (optional AI layer)
 
 ---
 
@@ -896,8 +983,140 @@ Difficult to estimate without additional clarification on requirements and data 
 **Output:** Reconciliation workpaper containing: (1) Side-by-side comparison of statement vs. Excel, (2) Matched items confirmed, (3) Discrepancies identified with variance amounts, (4) Suggested explanations for common variance types, (5) Items requiring manual investigation flagged, (6) Audit trail of source documents and extraction confidence scores
 
 **T-shirt size:**
+**Large, potentially XL** — This is a sneakily tough project. OCR + varied statement formats make this very difficult. Side-by-side comparison with discrepancies identified AND highlighted is complex workflow.
 
 **Questions:**
+- **High complexity:** OCR quality, format variability, reconciliation workflow all add significant complexity
+- How many counterparties? Each unique format needs its own extraction pipeline
+- Could break into parallel pipelines per counterparty with few-shot prompts, but that's complex coordination
+- Assumes backlog of historical statements exists for few-shot learning
+- Even with format consistency from same party, extraction + comparison + workflow is substantial
+- **High risk:** Reconciliation errors have serious consequences
+- Side-by-side workpaper with highlighted discrepancies is non-trivial UI/report generation
+- **Potential XL factors:** Complex workflow requirements, multiple counterparty formats, high accuracy bar
+- Internal records access adds integration complexity
+- **Recommendation:** Consider if existing reconciliation tools serve this need better
+
+---
+
+## Operations & Finance — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Enfusion Data Infrastructure**
+- **Required for:** OF-07 (critical), OF-08 (possibly), OF-10 (possibly)
+- **Components:** Regular API access, scheduled data pulls, structured storage, data warehouse
+- **Impact:** This is a FOUNDATIONAL project that unlocks multiple OF use cases
+- **Recommendation:** Build as standalone infrastructure project first
+- **Size estimate:** Medium to Large standalone project
+
+**2. Accounting System Integration (QuickBooks + others)**
+- **Required for:** OF-02, OF-03, OF-04, OF-05, OF-06, OF-08, OF-09
+- **Components:** API access, journal entry posting, data extraction, budget access
+- **Impact:** 7 of 11 OF projects depend on accounting system access
+- **QuickBooks mentioned for Mgmt Co** - need to confirm other systems for funds
+
+**3. Fund Administration System Access**
+- **Required for:** OF-09, OF-05, OF-06
+- **Components:** Investor records, transaction data, NAV/AUM data, side letter terms
+- **Impact:** Critical for fee calculations and capital flows reporting
+
+**4. Internal Trade Tracking System**
+- **Required for:** OF-10 (makes easier)
+- **Components:** Trade capture, position tracking, settlement tracking
+- **Impact:** If built robustly, OF-10 becomes additional feature rather than standalone project
+
+**5. Slack Integration (from IR/MI sections)**
+- **Required for:** OF-10
+- **Components:** Bot framework, channel posting, alerts
+- **Cross-reference:** IR/MI Slack infrastructure can be reused
+
+### Cross-Section Dependencies
+
+- **Document Repository:** Not heavily used in OF, but OF-11 needs document storage
+- **Slack Integration:** OF-10 uses same infrastructure as IR/MI sections
+
+### Key Observations
+
+**Many Projects Are NOT AI:**
+- **Traditional scripting/calculation:** OF-05, OF-06, OF-08, OF-09, OF-10 are deterministic logic
+- **LLMs bad at math:** Fee calculations (OF-05, OF-06) should not use LLMs for computation
+- **Actual AI opportunities:** OF-02 anomaly detection, OF-10 suggested resolutions, OF-11 document extraction
+
+**Workflow Observation Required:**
+- **OF-01, OF-03, OF-04, OF-08:** Need to observe existing workflows before sizing definitively
+- **Better approach:** Identify specific pain points, build targeted tools vs full automation
+- **Risk:** Building without understanding current process leads to unused features
+
+**Build vs Buy Considerations:**
+- **OF-01 (Expense Reports):** Modern platforms (Brex, Airbase) likely already solve this
+- **OF-03 (Month-End Close):** Existing accounting software may have better automation
+- **OF-04 (Budget Prep):** Budgeting software may be better investment than custom build
+- **OF-11 (Statement Recon):** Specialized reconciliation tools may exist
+
+**High-Risk, High-Accuracy Projects:**
+- **OF-05, OF-06 (Fee Calculations):** Errors have serious investor relations consequences
+- **OF-10, OF-11 (Reconciliation):** Financial accuracy critical
+- **Recommendation:** Human review mandatory before production use
+- **Audit trails required** for compliance
+
+**Sequencing Matters:**
+- **Enfusion infrastructure unlocks:** OF-07, potentially OF-08, OF-10
+- **OF-03 infrastructure enables:** OF-04 (budget prep leverages close data)
+- **OF-05 patterns reused in:** OF-06 (management fee logic → incentive fee)
+- **Internal trade tracking enables:** OF-10 as feature vs standalone
+
+### Critical Questions for All OF Projects
+
+1. **Observe workflows first:** What are current pain points and time-intensive steps?
+2. **What accounting/fund admin systems are used?** API access availability?
+3. **Is Enfusion data currently accessible?** Export format, API, update frequency?
+4. **How many funds/accounts/investors?** Volume affects infrastructure needs
+5. **What existing tools are in place?** Can they be leveraged better vs building from scratch?
+
+### Recommended Implementation Sequence
+
+**Foundation First (enables multiple projects):**
+1. **Enfusion Data Infrastructure** (Medium-Large) - Unlocks OF-07, OF-08, OF-10
+2. **Accounting System Integration** (Medium) - Enables OF-02, OF-03, OF-04, OF-05, OF-06, OF-08, OF-09
+
+**Quick Wins (if workflows observed):**
+3. **OF-08: Cash Position Summary** (Small) - If workflow is straightforward
+4. **OF-09: Capital Flows Report** (Small-Medium) - If fund admin API exists
+
+**Medium Complexity:**
+5. **OF-02: Spend Analytics** (Medium) - Basic analytics first, consolidation features later
+6. **OF-05: Management Fee Calculator** (Small-Medium) - Traditional script, not AI
+7. **OF-06: Incentive Fee Calculator** (Medium) - Builds on OF-05 patterns
+8. **OF-07: Tax Lot Processor** (Small-Medium) - After Enfusion infrastructure
+
+**Workflow-Dependent (observe first):**
+9. **OF-01: Expense Reports** (Medium-XL) - Clarify gap vs existing platforms
+10. **OF-03: Month-End Close** (TBD) - Observe workflow, build targeted tools
+11. **OF-04: Budget Prep** (Medium or Large) - Depends on OF-03, observe workflow
+
+**Complex/Risky:**
+12. **OF-10: Reconciliation Monitor** (Medium) - After trade tracking infrastructure
+13. **OF-11: Statement Reconciliation** (Large-XL) - OCR + format variability makes this very complex
+
+### Strategic Notes
+
+**OF Section Reality Check:**
+- This section has more "non-AI" projects than others (scripting, calculation, data aggregation)
+- Many projects need workflow observation before accurate sizing
+- Build vs buy decisions are critical - existing fintech tools may be better investments
+- Enfusion data infrastructure is THE foundational dependency
+
+**Adjacency to Core Expertise:**
+- Some projects (OF-03, OF-04) are somewhat adjacent to core AI/LLM expertise
+- Consider if building custom solutions is strategic vs leveraging existing accounting/finance software
+- Focus AI resources on problems where LLMs add unique value
+
+**Risk Management:**
+- Financial calculations have serious consequences for errors
+- All automated financial processes need human review loops
+- Audit trails and data lineage are not optional
+- Start with read-only reporting before building posting/writing capabilities
 
 ---
 
