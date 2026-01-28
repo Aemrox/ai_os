@@ -6,10 +6,6 @@ Boost efficiency and decision-making efficacy across XN's teams by leveraging AI
 
 ---
 
-**Note:** For comprehensive infrastructure analysis, dependencies, and strategic implementation roadmap, see [AI_infrastructure_and_roadmap.md](AI_infrastructure_and_roadmap.md)
-
----
-
 ## Investment Research & Analysis
 
 ### IR-01: Earnings Preview Generator
@@ -250,6 +246,64 @@ Difficult to estimate without additional clarification on requirements and data 
 
 ---
 
+## Investment Research & Analysis — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Financial Data Warehouse**
+- **Required for:** IR-01, IR-05, IR-06, IR-08, IR-09, IR-11, IR-12, IR-13
+- **Components:** Consensus estimates, historical financials, forward estimates, company fundamentals
+- **Impact:** This is the single most critical dependency. Without comprehensive financial data infrastructure, 8 of 13 IR projects have dramatically increased scope.
+
+**2. Trading/Market Data Infrastructure**
+- **Required for:** IR-05, IR-06, IR-09, IR-11, IR-12, IR-13
+- **Components:** Real-time and historical pricing, trading multiples, portfolio positions, returns data
+- **Impact:** 6 projects require reliable access to market data and trading information.
+
+**3. Document Repository & RAG System**
+- **Required for:** IR-02, IR-03, IR-04, IR-07, IR-08, IR-10
+- **Components:** Research documents, investment memos, expert transcripts, broker research, earnings call transcripts, company filings
+- **Impact:** A centralized, searchable document repository with semantic search is foundational for 6 projects.
+
+**4. Slack Integration Framework**
+- **Required for:** IR-01, IR-02, IR-03, IR-06
+- **Components:** Bot authentication, channel posting, interactive commands, file uploads
+- **Impact:** 4 projects require Slack integration. Building a solid Slackbot framework early reduces duplicate effort.
+
+**5. Internal Knowledge Base (BipSync/Notes)**
+- **Required for:** IR-01, IR-03, IR-08
+- **Components:** Internal research notes, analyst views, proprietary analysis
+- **Impact:** Connecting to internal notes system enables comparison of internal vs. Street views.
+
+**6. Event & Calendar Feed**
+- **Required for:** IR-01, IR-10
+- **Components:** Earnings calendar, macro event monitoring
+- **Impact:** Reliable event detection and scheduling triggers.
+
+### Recommended Implementation Sequence
+
+**Phase 1 — Foundation (High ROI, enables other projects):**
+1. Document Repository & RAG System → Enables IR-02, IR-03, IR-04, IR-07, IR-08
+2. Financial Data Warehouse → Enables IR-01, IR-05, IR-08, IR-09, IR-12
+3. Slack Integration Framework → Reduces overhead for IR-01, IR-03, IR-06
+
+**Phase 2 — Pilot Projects (Test infrastructure):**
+1. IR-01: Earnings Preview Generator (tests financial data + Slack + internal notes)
+2. IR-07: Expert Call Insight Extractor (straightforward, tests document processing)
+3. IR-04: Automated Research Digest (tests document repository, delivers immediate value)
+
+**Phase 3 — Advanced Capabilities:**
+1. IR-08: Investment Memo First Draft (requires mature document repository)
+2. IR-05: Company Comps Generator (requires financial + trading data)
+3. IR-03: Research Document Q&A Bot (aggregates learnings from prior projects)
+
+**Avoid Until Infrastructure Matures:**
+- IR-11: Portfolio Scenario Analyzer (partner/license instead of build)
+- IR-13: Trading Strategy Back-tester (partner/license instead of build)
+- IR-06: Consensus Estimate Change Monitor (significant real-time infrastructure if not hourly/daily)
+
+---
+
 ## Market Intelligence
 
 ### MI-01: Portfolio Company News Monitor
@@ -395,6 +449,85 @@ Difficult to estimate without additional clarification on requirements and data 
 
 ---
 
+## Market Intelligence — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. News & Research Feeds (Bloomberg, FactSet, AlphaSense)**
+- **Required for:** MI-01, MI-02, MI-03
+- **Components:** News APIs, feed normalization, deduplication
+- **Impact:** Foundation for all news-based monitoring. Same as IR-04 dependency.
+- **Cross-reference:** IR section infrastructure #3 (Document Repository) overlaps here
+
+**2. Transcript Access (Tegus/AlphaSense)**
+- **Required for:** MI-07
+- **Components:** Transcript API, parsing, storage
+- **Impact:** Same dependency as IR-07
+- **Cross-reference:** IR section infrastructure #3
+
+**3. SEC Filing Access**
+- **Required for:** MI-02, MI-04
+- **Components:** Filing feeds (Bloomberg/FactSet/Tegus), parsing logic
+- **Impact:** Medium complexity if vendor-provided, High if building EDGAR scraper
+
+**4. Alternative Data Integration**
+- **Required for:** MI-06 (Revealera for hiring data)
+- **Components:** Alt data vendor APIs, data normalization
+- **Impact:** Each new alt data source adds integration overhead
+
+**5. Sentiment/Social Data**
+- **Required for:** MI-05
+- **Components:** Social platform APIs or sentiment vendor integration
+- **Impact:** **CRITICAL BUILD VS BUY DECISION** - don't build from scratch
+
+### Cross-Section Dependencies
+
+- **Document Repository (from IR):** MI-07 needs same storage as IR-07
+- **Slack Integration (from IR):** If alerts preferred, reuse IR Slackbot framework
+- **Output Delivery:** Email digest vs Slack vs dashboard affects all MI projects
+
+### Key Observations
+
+**Aggregation Strategy Wins:**
+- All projects sized assuming we aggregate existing feeds, not build monitoring
+- This keeps Small projects at 2 weeks, Medium at 4-8 weeks, Large at 2-4 months
+- Building from scratch would push everything to XL+ (not feasible solo)
+
+**Real-Time Consideration:**
+- None of these projects sized for true real-time (sub-hour latency)
+- Recommend hourly or daily batches for V1
+- If real-time truly required, infrastructure costs increase dramatically
+
+**Data Source Dependencies:**
+- Most projects depend on vendor APIs being accessible and usable
+- Each "if data source doesn't exist" adds 1-2 size levels
+- Verify vendor API access before committing to timeline
+
+**Critical Questions for All MI Projects:**
+1. What's the actual latency requirement? (Real-time vs hourly vs daily)
+2. Output delivery preference? (Email < Slack < Dashboard)
+3. Approximately how many portfolio companies? (15-50 range estimated)
+4. Verify all assumed vendor data sources are accessible via API/export
+
+### Recommended Implementation Sequence
+
+**Quick Wins (if data sources exist):**
+1. **MI-04: SEC Filing Monitor** (Small-Medium) - likely vendor feeds exist
+2. **MI-06: Hiring Pattern Intelligence** (Small) - Revealera on vendor list
+
+**Medium Complexity (after quick wins):**
+3. **MI-01: Portfolio Company News Monitor** (Medium) - foundation for other news projects
+4. **MI-07: Management Commentary Tracker** (Large, or Medium if scope limited) - similar to IR-07
+
+**Higher Complexity (later phases):**
+5. **MI-03: Industry News Synthesizer** (Large) - hub project, builds on MI-01
+6. **MI-02: Competitor Intelligence Tracker** (Large) - aggregates MI-01, MI-04, MI-06
+
+**Evaluate Separately:**
+7. **MI-05: Social Sentiment** (XL+) - requires buy vs build analysis before proceeding
+
+---
+
 ## Private Markets
 
 ### PM-01: CIM Analyzer
@@ -504,6 +637,111 @@ Difficult to estimate without additional clarification on requirements and data 
 - Are private investment records structured/searchable, or scattered across documents?
 - **Dependency:** PM-04 data pipeline, RAG infrastructure (IR-03), structured private investment archive
 - **Recommendation:** Consider as phase 2 feature after PM-04 proves data standardization
+
+---
+
+## Private Markets — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Document Processing Infrastructure**
+- **Required for:** PM-01, PM-02, PM-03, PM-04
+- **Components:** PDF/Excel/Word parsing, OCR for scanned docs, structured data extraction
+- **Impact:** Foundation for all document-based PM projects. High variability in document formats increases complexity.
+
+**2. Egnyte Integration**
+- **Required for:** PM-01, PM-02
+- **Components:** Folder monitoring, file upload triggers, document access API
+- **Impact:** Enables automated triggers when new documents arrive
+
+**3. Financial Data Access (from IR section)**
+- **Required for:** PM-01 (public comps comparison)
+- **Components:** FactSet/CapIQ for public company metrics
+- **Impact:** Cross-reference to IR Financial Data Warehouse
+- **Cross-section dependency:** IR infrastructure #1
+
+**4. Corporate Document Archive**
+- **Required for:** PM-01, PM-03
+- **Components:** Historical deal documents, term sheets, investment agreements, CIMs
+- **Impact:** Critical for comparison features. If not structured, adds 4-6 weeks to projects requiring this data.
+- **Key question:** Does structured archive exist or need to be built?
+
+**5. Private Company Data (PitchBook/Preqin)**
+- **Required for:** PM-01, PM-03
+- **Components:** Market deal terms, valuation benchmarks, historical private transactions
+- **Impact:** Enables market comparison features
+
+**6. Data Standardization Pipeline**
+- **Required for:** PM-04 (builds this), PM-05 (depends on this)
+- **Components:** Metric extraction, template population, variance tracking, time-series storage
+- **Impact:** PM-04 creates this infrastructure; PM-05 leverages it
+
+**7. RAG Infrastructure (from IR section)**
+- **Required for:** PM-05
+- **Components:** Vector database, semantic search, Q&A interface
+- **Impact:** PM-05 is essentially IR-03 for private markets
+- **Cross-section dependency:** IR infrastructure #3
+
+### Cross-Section Dependencies
+
+- **Document Repository (IR):** PM projects need similar doc processing as IR section
+- **RAG System (IR):** PM-05 directly depends on IR-03 infrastructure
+- **Financial Data (IR):** PM-01 needs public market data for comps
+
+### Key Observations
+
+**Build vs Buy Considerations:**
+- **PM-03 (Deal Terms):** Strong candidate for partnering with platforms like Harvey. High hallucination risk with serious consequences.
+- **PM-02 (Data Room):** Consider if existing due diligence platforms offer better solutions
+- Recommend narrow scope pilots before full builds
+
+**Sequencing Matters:**
+- **PM-04 enables PM-05:** Data standardization pipeline in PM-04 makes PM-05 significantly easier
+- **PM-05 may be feature of IR-03:** Not standalone project, but extension of Research Q&A Bot to private markets data
+- **Corporate document archive is critical:** If doesn't exist, multiple projects (PM-01, PM-03) become significantly more complex
+
+**Document Variability Risk:**
+- Private markets documents (CIMs, data rooms, updates) have high format variability
+- Each format variation adds development time
+- OCR quality for scanned documents can be poor
+- Budget extra time for parsing edge cases
+
+**Critical Questions for All PM Projects:**
+1. How many private deals/portfolio companies? (Affects ROI calculation)
+2. Does structured corporate document archive exist?
+3. What format consistency exists in CIMs, data rooms, portfolio company reports?
+4. Is there existing diligence checklist/workflow we can follow?
+
+### Recommended Implementation Sequence
+
+**Foundation First:**
+1. **Corporate Document Archive** — If doesn't exist, building this unlocks PM-01 and PM-03. Could be Large project itself.
+2. **Document Processing Infrastructure** — Shared across all PM projects
+
+**Quick Win (if data available):**
+3. **PM-04: Update Processor** (Medium) — Builds data standardization pipeline, enables PM-05
+
+**Medium Complexity:**
+4. **PM-01: CIM Analyzer** (Medium-Large) — Start without comparisons (Medium), add comparisons phase 2
+5. **PM-05: Q&A Bot** (Medium) — After PM-04, consider as feature of IR-03
+
+**Higher Complexity:**
+6. **PM-02: Data Room Processor** (Large) — Complex due to document volume and variety
+
+**Evaluate Separately:**
+7. **PM-03: Deal Terms** (Medium-Large) — Build vs buy decision, high hallucination risk. Consider Harvey or similar platform.
+
+### Strategic Notes
+
+**PM Section Maturity:**
+- Private markets projects depend heavily on whether corporate document infrastructure exists
+- If starting from scratch, recommend building document archive as Phase 1 (potentially Large project)
+- Many PM projects are document processing variations - shared infrastructure has high ROI
+
+**Integration with IR Section:**
+- PM-05 should likely be integrated with IR-03 rather than separate bot
+- Financial data needs for PM-01 already covered by IR infrastructure
+- Document processing patterns similar to IR use cases
 
 ---
 
@@ -740,24 +978,145 @@ Difficult to estimate without additional clarification on requirements and data 
 
 **Trigger:** Monthly/quarterly statements received from counterparties (PDF via email or portal)
 
-**Process:** Two-stage reconciliation: (1) LLM extracts data from well-structured PDF statements (no OCR needed) into JSON/CSV format. Parses account balances, positions, transactions, and fees from limited set of consistent formats (4 primary brokers + 1 fund manager + 1-2 custodians = ~6-7 total counterparties). (2) Pandas DataFrame comparison against internal Excel records. Highlights discrepancies via data comparison rather than visual side-by-side. Calculates variance amounts and flags items requiring investigation.
+**Process:** AI extracts data from PDF statements using OCR. Parses account balances, positions, transactions, and fees from various statement formats (prime brokers, custodians, fund admin). Compares extracted values against internal Excel records. Identifies discrepancies and calculates variance amounts. Flags items requiring investigation.
 
-**Output:** Reconciliation workpaper containing: (1) Data comparison results with discrepancies highlighted, (2) Matched items confirmed, (3) Variance amounts calculated, (4) Items requiring manual investigation flagged with context, (5) Audit trail of extraction confidence scores per counterparty format
+**Output:** Reconciliation workpaper containing: (1) Side-by-side comparison of statement vs. Excel, (2) Matched items confirmed, (3) Discrepancies identified with variance amounts, (4) Suggested explanations for common variance types, (5) Items requiring manual investigation flagged, (6) Audit trail of source documents and extraction confidence scores
 
 **T-shirt size:**
-**Medium** — LLM extraction from limited set of well-structured PDFs (6-7 counterparty formats) combined with DataFrame comparison logic. Reduced from Large/XL due to: (1) No OCR required - consistent, well-structured PDFs, (2) Limited counterparties with stable formats, (3) Two-stage approach simplifies architecture (LLM extraction → pandas comparison), (4) Data comparison vs visual side-by-side reduces UI complexity. Still requires prompt engineering for each counterparty format, robust validation framework (financial accuracy critical), and edge case handling. Conservative Medium sizing appropriate given consequences of reconciliation errors.
+**Large, potentially XL** — This is a sneakily tough project. OCR + varied statement formats make this very difficult. Side-by-side comparison with discrepancies identified AND highlighted is complex workflow.
 
 **Questions:**
-- **Confirm counterparty details:** Which 4 primary brokers? Which fund manager and custodians?
-- **PDF format validation:** Are statements truly consistent (no scanned documents, no format variations over time)?
-- **Excel schema:** What's the internal record structure for comparison? How standardized is it?
-- **Reconciliation rules:** Exact matching or tolerance for rounding differences? Precision requirements?
-- **Edge cases:** How to handle pending vs settled trades, corporate actions, stock splits, currency conversions?
-- **Historical data:** Backlog of statements available for testing extraction prompts?
-- **Confidence threshold:** What extraction confidence score triggers manual review?
-- **Validation approach:** How to build confidence before production use? Shadow comparison period?
-- **Deployment frequency:** Monthly vs quarterly reconciliation affects testing cycles
-- **Risk assessment:** What's the cost/impact of missed discrepancies vs false positives?
+- **High complexity:** OCR quality, format variability, reconciliation workflow all add significant complexity
+- How many counterparties? Each unique format needs its own extraction pipeline
+- Could break into parallel pipelines per counterparty with few-shot prompts, but that's complex coordination
+- Assumes backlog of historical statements exists for few-shot learning
+- Even with format consistency from same party, extraction + comparison + workflow is substantial
+- **High risk:** Reconciliation errors have serious consequences
+- Side-by-side workpaper with highlighted discrepancies is non-trivial UI/report generation
+- **Potential XL factors:** Complex workflow requirements, multiple counterparty formats, high accuracy bar
+- Internal records access adds integration complexity
+- **Recommendation:** Consider if existing reconciliation tools serve this need better
+
+---
+
+## Operations & Finance — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Enfusion Data Infrastructure**
+- **Required for:** OF-07 (critical), OF-08 (possibly), OF-10 (possibly)
+- **Components:** Regular API access, scheduled data pulls, structured storage, data warehouse
+- **Impact:** This is a FOUNDATIONAL project that unlocks multiple OF use cases
+- **Recommendation:** Build as standalone infrastructure project first
+- **Size estimate:** Medium to Large standalone project
+
+**2. Accounting System Integration (QuickBooks + others)**
+- **Required for:** OF-02, OF-03, OF-04, OF-05, OF-06, OF-08, OF-09
+- **Components:** API access, journal entry posting, data extraction, budget access
+- **Impact:** 7 of 11 OF projects depend on accounting system access
+- **QuickBooks mentioned for Mgmt Co** - need to confirm other systems for funds
+
+**3. Fund Administration System Access**
+- **Required for:** OF-09, OF-05, OF-06
+- **Components:** Investor records, transaction data, NAV/AUM data, side letter terms
+- **Impact:** Critical for fee calculations and capital flows reporting
+
+**4. Internal Trade Tracking System**
+- **Required for:** OF-10 (makes easier)
+- **Components:** Trade capture, position tracking, settlement tracking
+- **Impact:** If built robustly, OF-10 becomes additional feature rather than standalone project
+
+**5. Slack Integration (from IR/MI sections)**
+- **Required for:** OF-10
+- **Components:** Bot framework, channel posting, alerts
+- **Cross-reference:** IR/MI Slack infrastructure can be reused
+
+### Cross-Section Dependencies
+
+- **Document Repository:** Not heavily used in OF, but OF-11 needs document storage
+- **Slack Integration:** OF-10 uses same infrastructure as IR/MI sections
+
+### Key Observations
+
+**Many Projects Are NOT AI:**
+- **Traditional scripting/calculation:** OF-05, OF-06, OF-08, OF-09, OF-10 are deterministic logic
+- **LLMs bad at math:** Fee calculations (OF-05, OF-06) should not use LLMs for computation
+- **Actual AI opportunities:** OF-02 anomaly detection, OF-10 suggested resolutions, OF-11 document extraction
+
+**Workflow Observation Required:**
+- **OF-01, OF-03, OF-04, OF-08:** Need to observe existing workflows before sizing definitively
+- **Better approach:** Identify specific pain points, build targeted tools vs full automation
+- **Risk:** Building without understanding current process leads to unused features
+
+**Build vs Buy Considerations:**
+- **OF-01 (Expense Reports):** Modern platforms (Brex, Airbase) likely already solve this
+- **OF-03 (Month-End Close):** Existing accounting software may have better automation
+- **OF-04 (Budget Prep):** Budgeting software may be better investment than custom build
+- **OF-11 (Statement Recon):** Specialized reconciliation tools may exist
+
+**High-Risk, High-Accuracy Projects:**
+- **OF-05, OF-06 (Fee Calculations):** Errors have serious investor relations consequences
+- **OF-10, OF-11 (Reconciliation):** Financial accuracy critical
+- **Recommendation:** Human review mandatory before production use
+- **Audit trails required** for compliance
+
+**Sequencing Matters:**
+- **Enfusion infrastructure unlocks:** OF-07, potentially OF-08, OF-10
+- **OF-03 infrastructure enables:** OF-04 (budget prep leverages close data)
+- **OF-05 patterns reused in:** OF-06 (management fee logic → incentive fee)
+- **Internal trade tracking enables:** OF-10 as feature vs standalone
+
+### Critical Questions for All OF Projects
+
+1. **Observe workflows first:** What are current pain points and time-intensive steps?
+2. **What accounting/fund admin systems are used?** API access availability?
+3. **Is Enfusion data currently accessible?** Export format, API, update frequency?
+4. **How many funds/accounts/investors?** Volume affects infrastructure needs
+5. **What existing tools are in place?** Can they be leveraged better vs building from scratch?
+
+### Recommended Implementation Sequence
+
+**Foundation First (enables multiple projects):**
+1. **Enfusion Data Infrastructure** (Medium-Large) - Unlocks OF-07, OF-08, OF-10
+2. **Accounting System Integration** (Medium) - Enables OF-02, OF-03, OF-04, OF-05, OF-06, OF-08, OF-09
+
+**Quick Wins (if workflows observed):**
+3. **OF-08: Cash Position Summary** (Small) - If workflow is straightforward
+4. **OF-09: Capital Flows Report** (Small-Medium) - If fund admin API exists
+
+**Medium Complexity:**
+5. **OF-02: Spend Analytics** (Medium) - Basic analytics first, consolidation features later
+6. **OF-05: Management Fee Calculator** (Small-Medium) - Traditional script, not AI
+7. **OF-06: Incentive Fee Calculator** (Medium) - Builds on OF-05 patterns
+8. **OF-07: Tax Lot Processor** (Small-Medium) - After Enfusion infrastructure
+
+**Workflow-Dependent (observe first):**
+9. **OF-01: Expense Reports** (Medium-XL) - Clarify gap vs existing platforms
+10. **OF-03: Month-End Close** (TBD) - Observe workflow, build targeted tools
+11. **OF-04: Budget Prep** (Medium or Large) - Depends on OF-03, observe workflow
+
+**Complex/Risky:**
+12. **OF-10: Reconciliation Monitor** (Medium) - After trade tracking infrastructure
+13. **OF-11: Statement Reconciliation** (Large-XL) - OCR + format variability makes this very complex
+
+### Strategic Notes
+
+**OF Section Reality Check:**
+- This section has more "non-AI" projects than others (scripting, calculation, data aggregation)
+- Many projects need workflow observation before accurate sizing
+- Build vs buy decisions are critical - existing fintech tools may be better investments
+- Enfusion data infrastructure is THE foundational dependency
+
+**Adjacency to Core Expertise:**
+- Some projects (OF-03, OF-04) are somewhat adjacent to core AI/LLM expertise
+- Consider if building custom solutions is strategic vs leveraging existing accounting/finance software
+- Focus AI resources on problems where LLMs add unique value
+
+**Risk Management:**
+- Financial calculations have serious consequences for errors
+- All automated financial processes need human review loops
+- Audit trails and data lineage are not optional
+- Start with read-only reporting before building posting/writing capabilities
 
 ---
 
@@ -936,6 +1295,113 @@ Difficult to estimate without additional clarification on requirements and data 
 - **If building from scratch:** Large to XL (regulatory intelligence is complex domain)
 - **Recommendation:** Subscribe to regulatory intelligence service, build internal policy gap analysis on top = Medium
 - Compliance-specific AI tools may already offer this functionality
+
+---
+
+## Legal & Compliance — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Document Repository & RAG System (from IR section)**
+- **Required for:** LC-03, LC-06
+- **Components:** Vector database, semantic search, document processing
+- **Impact:** LC-03 and LC-06 are essentially IR-03 for legal documents
+- **Cross-section dependency:** IR infrastructure #3
+- **Recommendation:** Integrate legal document Q&A into IR-03 rather than building separate systems
+
+**2. Legal Document Processing**
+- **Required for:** LC-02, LC-03, LC-04, LC-06
+- **Components:** PDF extraction, clause identification, term extraction, comparison logic
+- **Impact:** Specialized for legal documents (contracts, side letters, NDAs, fund docs)
+- **Hallucination risk:** Legal documents require high accuracy. Errors have serious consequences.
+- **Harvey likely covers this:** If using Harvey for contract review, can leverage for other legal doc processing
+
+**3. Trade Data & Compliance Context**
+- **Required for:** LC-01
+- **Components:** Internal trade data, restricted list, calendar/meeting data, expert call records
+- **Impact:** Cross-references trades with compliance constraints and MNPI context
+- **Cross-section dependencies:** Operations (trade data), Corporate Access (meetings)
+
+**4. Regulatory Intelligence Feed**
+- **Required for:** LC-07
+- **Components:** Regulatory updates, SEC/FINRA guidance, compliance deadlines
+- **Impact:** Foundation for policy monitoring
+- **Build vs buy:** Strong candidate for external subscription service (RIA in a Box, MyComplianceOffice, etc.)
+
+**5. Historical Document Archives**
+- **Required for:** LC-02, LC-03, LC-04, LC-05, LC-06
+- **Components:** Contracts, side letters, NDAs, fund documents, amendments, prior marketing content with approved disclaimers
+- **Impact:** Precedent matching and approved language requires searchable historical corpus
+- **Critical for LC-05:** History of marketing disclaimers significantly reduces implementation complexity
+
+### Cross-Section Dependencies
+
+- **Document Repository (IR):** LC projects heavily depend on IR-03 infrastructure
+- **Trade Data (OF):** LC-01 needs trade tracking from OF section
+- **Meeting/Calendar Data (CA):** LC-01 cross-references corporate access events for MNPI context
+
+### Key Observations
+
+**Build vs Buy Is The Theme:**
+- **LC-02 (Contract Review):** Harvey already being evaluated by team - strong buy recommendation
+- **LC-01 (Trade Surveillance):** Compliance-specific AI tools (Behavox, Smarsh, ComplyAdvantage) likely better than custom build
+- **LC-07 (Policy Monitoring):** Regulatory intelligence services already exist
+- **LC-04 (NDA Processing):** Entry-level Harvey workflow
+- **Theme of this section:** Evaluating products rather than building from scratch
+- **Hybrid approach:** Can build integration tools (MCP tools, data feeds) on top of purchased platforms
+
+**Hallucination Risk High:**
+- All legal document analysis projects (LC-02, LC-03, LC-04, LC-06) have high stakes
+- LLM errors in legal context = liability risk
+- Human legal review mandatory before any automated output is used
+- Extensive evaluation frameworks required
+- **Outside core competency:** Legal/compliance is specialized domain
+
+**Document Repository Overlap:**
+- **LC-03 overlaps with InvRel-06** (Side Letter Query Bot) - same or different?
+- **LC-03, LC-06 should be features of IR-03** rather than standalone projects
+- Consider unified document Q&A system covering: research, side letters, fund documents, contracts
+- Building 3+ separate RAG systems is inefficient
+- Harvey may already provide unified legal document search
+
+**Non-Engineering Work Significant:**
+- **LC-05 (Marketing Footnotes):** Requires compiling history, creating full disclaimer list, documenting approved language
+- This prep work makes implementation significantly easier
+- 80/20 approach works well - focus on most common cases first
+
+**Small Win Opportunities:**
+- **LC-01:** Narrow scope (restricted list check only) = Small
+- **LC-05:** Start with performance claims only (most common 80%) = Small to Medium
+- **LC-04:** If high volume + standard templates = Small (but likely covered by Harvey)
+
+### Critical Questions for All LC Projects
+
+1. **What's the Harvey evaluation status?** Many LC projects may already be covered
+2. **What compliance-specific AI tools exist?** Beyond Charles River/Bloomberg (e.g., Behavox, Smarsh, ComplyAdvantage)
+3. **Do legal document archives exist?** Structured and searchable, or need to be built?
+4. **Volume questions:** NDAs per day/week/month? Marketing content frequency? Contract volume?
+5. **Can LC projects be features of purchased platforms?** Rather than custom builds
+
+### Recommended Implementation Sequence
+
+**Evaluate First (Build vs Buy decisions):**
+1. **Harvey evaluation** — May cover LC-02, LC-03, LC-04, LC-06
+2. **Compliance AI tools** — For LC-01 (trade surveillance)
+3. **Regulatory intelligence services** — For LC-07 (policy monitoring)
+
+**Small Win (if not covered by Harvey):**
+4. **LC-01: Trade Surveillance** (Small for narrow scope) — Restricted list check only
+
+**After Product Evaluation:**
+5. **Build integration tools** (Small-Medium) — MCP tools to connect internal data to purchased platforms
+6. **LC-05: Marketing Footnotes** (Small-Medium) — Start with performance claims, requires non-engineering prep work
+7. **LC-03/LC-06: Legal Document Q&A** (Medium) — If not using Harvey, integrate into IR-03 infrastructure
+
+**Strategic Notes:**
+- **This section is about product evaluation, not building** — Legal/compliance has mature AI solutions
+- **Hybrid approach wins:** Buy platforms, build integration/enhancement tools
+- **Outside core competency:** Legal document analysis is specialized domain
+- **Regulatory risk:** Human review always required, regardless of automation level
 
 ---
 
@@ -1136,6 +1602,138 @@ Difficult to estimate without additional clarification on requirements and data 
 
 ---
 
+## Investor Relations — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Investor Data Warehouse (InvRel-07)**
+- **Required for:** InvRel-01, InvRel-02, InvRel-03, InvRel-04, InvRel-05
+- **Components:** Investor records, relationship history, transaction history, balances, allocations, meeting notes, DDQ responses
+- **Impact:** InvRel-07 is FOUNDATIONAL infrastructure that unlocks most other InvRel projects
+- **Size:** Large project itself (data reconciliation, warehousing, dashboard)
+- **Critical for success:** Backfilling historical data is essential for usefulness
+- **This should be built first** before other InvRel projects
+
+**2. Performance & Attribution Data (from IR section)**
+- **Required for:** InvRel-03, InvRel-05
+- **Components:** Fund performance, attribution, AUM trends, top contributors/detractors, exposure breakdowns
+- **Cross-section dependency:** IR Financial Data Warehouse
+- **Impact:** Investor letters and cheat sheets require same performance infrastructure as IR projects
+
+**3. Document Repository & RAG System (from IR section)**
+- **Required for:** InvRel-06 (Side Letter Query Bot)
+- **Components:** Side letter corpus, semantic search, Q&A interface
+- **Cross-section dependency:** IR infrastructure #3
+- **Overlap:** InvRel-06 is the SAME as LC-03 - should be one project, not two
+
+**4. Fund Administration System Access**
+- **Required for:** InvRel-03, InvRel-04, InvRel-05, InvRel-07
+- **Components:** NAV data, investor balances, transaction records, capital flows
+- **Impact:** Most InvRel projects need fund admin data
+
+**5. Dashboard Infrastructure**
+- **Required for:** InvRel-07
+- **Components:** Dashboard framework, reporting tools, data visualization
+- **Build vs buy:** Tools like Retool, Sigma Computing, or data warehouse-native tools vs custom build
+- **Impact:** Significantly affects InvRel-07 complexity
+
+### Cross-Section Dependencies
+
+- **Performance Data (IR):** InvRel-03, InvRel-05 need same infrastructure as IR-12
+- **RAG System (IR):** InvRel-06 should be part of IR-03 unified document Q&A
+- **Side Letters (LC):** InvRel-06 = LC-03, should not be duplicated
+
+### Key Observations
+
+**InvRel-07 Is Foundational:**
+- Large project but unlocks 5+ other InvRel projects
+- Data reconciliation, warehousing, and historical backfill are critical
+- Dashboard requirement adds significant complexity
+- **Recommendation:** Build InvRel-07 first, enables rest of section
+- Consider dashboard tooling (Retool, Sigma) vs custom build
+
+**Workflow Integration Complexity:**
+- **InvRel-01:** Email integration (Outlook plugin, Chrome extension) is complex
+- **Simple approach:** MCP tool or separate interface where user copies draft
+- Complex integration can balloon Small project to Large
+- **Recommendation:** Start simple (MCP tool), add integration later if needed
+
+**High-Risk Projects:**
+- **InvRel-04 (DDQ Response):** Wrong/outdated information = serious consequences with prospective LPs
+- Requires response versioning, invalidation tracking, evaluation framework
+- Human review mandatory before submission
+
+**Data Dependency Theme:**
+- Almost all InvRel projects depend on investor data being accessible
+- If data scattered across multiple systems: projects become significantly harder
+- Investing in InvRel-07 (data aggregation) has high ROI for entire section
+
+**Not Really AI:**
+- **InvRel-07:** Traditional data engineering and ETL, not LLM work
+- **InvRel-01, InvRel-03:** Document drafting (straightforward LLM application)
+- **InvRel-04:** Q&A matching with versioning logic (hybrid)
+
+### Critical Questions for All InvRel Projects
+
+1. **Where is investor relationship data currently stored?** (CRM, email, meeting notes, scattered)
+2. **How far back does historical data need to go?** Can we backfill?
+3. **Fund administration system and API access?**
+4. **How many LPs across all funds?**
+5. **What's the volume?** (LP meetings, DDQs, communications per month)
+6. **Dashboard tooling preference?** (Retool, Sigma, custom, data warehouse-native)
+
+### Recommended Implementation Sequence
+
+**Foundation First (Large but unlocks others):**
+1. **InvRel-07: Investor Data Aggregator** (Large) — Build investor data warehouse, enables InvRel-01, InvRel-02, InvRel-04
+   - Evaluate dashboard tooling options (Retool, Sigma, etc.)
+   - Focus on historical data backfill
+   - Data reconciliation framework
+
+**After InvRel-07 Infrastructure:**
+2. **InvRel-01: LP Communication Drafter** (Small with simple workflow) — MCP tool approach first
+3. **InvRel-04: DDQ Response** (Medium) — Build response versioning system, evaluation framework
+4. **InvRel-02: Meeting Prep Generator** (Medium) — Leverages InvRel-07 data
+
+**After Performance Infrastructure (from IR section):**
+5. **InvRel-05: Quarterly Cheat Sheet** (Medium) — Requires performance/attribution data
+6. **InvRel-03: Investor Letter Draft** (Medium-Large) — Comprehensive performance data needed
+
+**After IR-03 RAG Infrastructure:**
+7. **InvRel-06: Side Letter Query Bot** (Medium) — Add side letters to IR-03, not standalone project
+   - **Critical:** Confirm this isn't duplicate of LC-03
+
+### Overlap Alert: Duplicate Projects
+
+**InvRel-06 = LC-03:**
+- Both are "Side Letter Query Bot" / "Side Letter Term Repository"
+- Should be ONE project, not two separate entries
+- Recommend consolidating in final analysis
+
+**InvRel-02 similar to AD-01:**
+- InvRel-02: Investor Meeting Prep (specialized for LPs)
+- AD-01: Meeting Prep Automator (general purpose)
+- Consider if InvRel-02 is specialized version of AD-01
+
+### Strategic Notes
+
+**This Section is Data-Heavy:**
+- Success hinges on quality of investor data aggregation (InvRel-07)
+- Most projects are straightforward once data infrastructure exists
+- Without InvRel-07, projects range Medium to Large. With it: Small to Medium
+
+**Dashboard Tooling Decision is Critical:**
+- InvRel-07 dashboard requirement is significant complexity driver
+- Evaluate tools (Retool, Sigma Computing, Looker, Tableau) before committing to custom build
+- Tool choice affects multiple projects across sections (IR-12, OF-02, AD-04)
+
+**Low AI Complexity, High Data Engineering:**
+- Most InvRel projects are document drafting or data aggregation
+- Real complexity is data engineering (InvRel-07), not AI/LLM
+- Focus on data infrastructure first, LLM applications are straightforward
+
+---
+
 ## Corporate Access
 
 ### CA-01: Event Identifier and Tracker
@@ -1272,6 +1870,146 @@ Difficult to estimate without additional clarification on requirements and data 
 
 ---
 
+## Corporate Access — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Structured Event Database (CA-01)**
+- **Required for:** CA-02, CA-03, CA-04, CA-05
+- **Components:** Event records (company, date, location, bank, format), analyst assignments, attendance tracking, RSVP status
+- **Impact:** CA-01 is FOUNDATIONAL - all other CA projects depend on structured event data
+- **Can use intermediate source:** Outlook calendar as structured data store for MVP simplifies database requirement
+- **Historical data important:** CA-03 forecasting requires historical backlog
+- **Workflow observation:** CA-05 reporting can help define ideal data model for CA-01
+
+**2. Calendar Integration**
+- **Required for:** CA-01, CA-02
+- **Components:** Calendar API access (Outlook, Google), multi-user calendar management, conflict detection
+- **Impact:** CA-01 creates events, CA-02 manages routing and conflicts
+- **Complexity driver:** Managing conflicts is outside core competency (calendar management logic)
+
+**3. Analyst Coverage Mapping**
+- **Required for:** CA-01, CA-02
+- **Components:** Industry and company lists per analyst, coverage assignments
+- **Impact:** Enables automated analyst matching for events
+- **Can be simple:** Spreadsheet or basic database sufficient for MVP
+
+**4. Broker Relationship Data**
+- **Required for:** CA-04, CA-05
+- **Components:** Commission spend tracking, event requests/allocations, research consumption metrics
+- **Impact:** Enables broker ROI analysis
+- **Existing tool:** CorpAxe (Finiato) on vendor list - broker management may already be tracked
+- **Question:** What's already in CorpAxe vs needs to be built?
+
+**5. Email Integration**
+- **Required for:** CA-01
+- **Components:** Email parsing, event extraction
+- **Simple approach:** Specific email address that gets copied on corporate access messages (avoids complex inbox API)
+
+### Cross-Section Dependencies
+
+- **Calendar Integration:** Similar needs to InvRel-01, InvRel-02 (meeting scheduling)
+- **Research Consumption Tracking:** CA-04 needs to know which broker research is being read
+
+### Key Observations
+
+**CA-01 Is Foundational:**
+- Small project but unlocks all other CA projects
+- Structured event database enables reporting, forecasting, analytics
+- **Workflow observation for CA-05 can inform CA-01 data model** - consider building CA-01 after observing current workflow
+- Historical data backlog important for CA-03 forecasting
+
+**Mostly Not AI:**
+- **CA-01:** Email parsing (AI), but event extraction fairly straightforward
+- **CA-02:** Calendar management (traditional automation)
+- **CA-03:** Forecasting/pattern detection (adjacent to core competency)
+- **CA-04:** Data aggregation and analytics (traditional BI)
+- **CA-05:** Reporting (traditional BI)
+- Real AI opportunities are limited in this section
+
+**Workflow Observation Important:**
+- **CA-05:** Observe existing reporting workflow to identify:
+  - Basic non-AI automations that save time
+  - What reports are actually valuable
+  - What data model CA-01 should use
+- Don't build reports that won't be used
+
+**Adjacent to Core Competency:**
+- **CA-02:** Managing calendar conflicts is outside main expertise
+- **CA-03:** Forecasting/predictive analytics not core AI/LLM work
+- Both are more calendar management / analytics than AI
+
+**Build vs Buy Considerations:**
+- **CA-03:** Corporate access management platforms may offer forecasting
+- **CA-04/CA-05:** CorpAxe (Finiato) already in use - does it cover broker analytics?
+- Research existing tools before building
+
+**Overlap Alert:**
+- **CA-04 and CA-05:** Both generate broker/corporate access analytics
+- Consider if these should be consolidated into single reporting project
+- CA-04 more broker-focused, CA-05 more event-focused, but significant overlap
+
+### Critical Questions for All CA Projects
+
+1. **What's already in CorpAxe (Finiato)?** Broker management platform on vendor list - what functionality exists?
+2. **Observe workflow first:** What corporate access reports are currently generated manually?
+3. **How many corporate access emails per week/month?** Volume affects ROI
+4. **Historical event data:** How far back? Currently structured or scattered?
+5. **Calendar system and multi-user permissions?**
+6. **Should CA-04 and CA-05 be consolidated?** Significant overlap in analytics
+
+### Recommended Implementation Sequence
+
+**Foundation + Observation:**
+1. **Observe current CA workflow** (CA-05 focus) — Understand reporting needs, inform CA-01 data model
+2. **CA-01: Event Identifier and Tracker** (Small) — Build structured event database
+   - Use email forwarding (not complex inbox API)
+   - Start simple: Outlook calendar as data store for MVP
+   - Analyst matching via simple coverage lists
+
+**After CA-01:**
+3. **CA-02: Calendar Sync and Routing** (Small) — Add events to calendars
+   - Keep simple: routing + conflict alerts (not intelligent conflict management)
+
+4. **CA-05: Corporate Access Reporting** (Small-Medium) — Basic reporting after observing workflow
+   - Leverage CA-01 structured data
+   - Focus on automating existing manual reports
+
+**Evaluate First:**
+5. **CA-04: Broker Utilization Analyzer** (Medium) — Check CorpAxe capabilities first
+   - If CorpAxe doesn't cover: build analytics layer
+   - Consider consolidating with CA-05
+
+**Question ROI:**
+6. **CA-03: Corporate Access Forecaster** (Small-Medium) — Adjacent to core competency
+   - If building: start very simple (recurring conference alerts only)
+   - Research existing corporate access management platforms first
+   - May not be worth building beyond basic alerts
+
+### Strategic Notes
+
+**Limited AI Opportunities:**
+- This section is mostly calendar management, data aggregation, and reporting
+- True AI/LLM work limited to email parsing (CA-01)
+- Consider if resources better spent on higher-AI-value projects
+
+**CorpAxe Already Exists:**
+- Finiato (CorpAxe) on vendor list for broker management
+- Research existing capabilities before building CA-04/CA-05
+- May already have reporting that covers these needs
+
+**CA-01 Is Quick Win:**
+- Small project with immediate value (automated event tracking)
+- Enables rest of section
+- Good candidate for early implementation
+
+**Observe Before Building:**
+- CA-05 workflow observation can inform entire CA section
+- Understand what reports/analytics are actually valuable
+- Identify non-AI automations that save time
+
+---
+
 ## Administrative & Cross-Functional
 
 ### AD-01: Meeting Prep Automator
@@ -1403,5 +2141,165 @@ Difficult to estimate without additional clarification on requirements and data 
 - **Could be fun and unique value-add** if ROI is really there
 - **Privacy considerations** are significant
 - **Dependency:** Email/calendar access, CRM data, potentially LinkedIn (difficult), graph database infrastructure
+
+---
+
+## Administrative & Cross-Functional — Shared Infrastructure
+
+### Critical Shared Dependencies
+
+**1. Document Repository & RAG System (from IR section)**
+- **Required for:** AD-02, AD-03
+- **Components:** Vector database, semantic search, document indexing, classification
+- **Cross-section dependency:** IR infrastructure #3
+- **Impact:** AD-02 is essentially IR-03 with broader document scope, AD-03 feeds into document repository
+- **AD-03 as starting point:** Egnyte integration provides tangible win while building broader document infrastructure
+
+**2. Meeting Notes and Relationship Data**
+- **Required for:** AD-01
+- **Components:** Prior meeting notes, participant information, relationship history
+- **Similar to InvRel-02:** AD-01 is general-purpose version of investor meeting prep
+- **Impact:** Meeting prep depends on structured meeting history
+
+**3. Calendar Integration (from IR/CA sections)**
+- **Required for:** AD-01
+- **Components:** Calendar API access, meeting detection, participant extraction
+- **Cross-section dependency:** InvRel-01, InvRel-02, CA-01, CA-02 use similar calendar integration
+- **Impact:** Shared infrastructure across multiple sections
+
+**4. Comprehensive Data Warehouse**
+- **Required for:** AD-04
+- **Components:** All data sources across all sections (positions, performance, investor data, private investments, operations, etc.)
+- **Impact:** AD-04 is aggregation of everything - requires foundational infrastructure from ALL sections
+- **This is the most dependent project in entire analysis**
+
+**5. Dashboard Infrastructure**
+- **Required for:** AD-04
+- **Components:** Dashboard framework, data visualization, web interface, query routing
+- **Cross-section dependency:** InvRel-07 also needs dashboard
+- **Build vs buy:** Retool, Sigma Computing, Looker, Tableau vs custom build
+- **Impact:** Dashboard tooling decision affects multiple projects across sections
+
+**6. Graph Database & Communication Access**
+- **Required for:** AD-05
+- **Components:** Neo4j or similar, email/calendar/CRM access, relationship strength algorithms
+- **Impact:** Unique to AD-05, substantial infrastructure need
+- **Privacy considerations:** Accessing communication patterns across firm
+
+### Cross-Section Dependencies
+
+**AD-02 = IR-03 extension:**
+- Same RAG infrastructure
+- Broader document scope (all Egnyte, not just research)
+- Should be feature of IR-03, not standalone
+
+**AD-03 = Part of IR-03 infrastructure:**
+- Document tagging/classification feeds into document repository
+- First milestone of broader document repository project
+
+**AD-01 similar to InvRel-02:**
+- General meeting prep vs investor meeting prep
+- Consider shared infrastructure
+
+**AD-04 depends on EVERYTHING:**
+- Requires data from IR, MI, PM, OF, LC, InvRel, CA sections
+- Should be built LAST after foundational data infrastructure exists
+
+### Key Observations
+
+**Many Projects Are Extensions of IR-03:**
+- **AD-02:** Enterprise search is IR-03 for all documents
+- **AD-03:** Document tagger is infrastructure feeding IR-03
+- **Recommendation:** Don't build 3 separate systems, integrate into unified document repository
+
+**AD-04 Is Massive in Scope:**
+- Large to XL project aggregating all data sources
+- Requires virtually every other foundational project to be complete first
+- **Break into phases:** Basic dashboard → domain-specific chatbot → cross-functional synthesis
+- Dashboard tooling decision (Retool vs custom) critically affects scope
+- **Build LAST** in implementation sequence
+
+**AD-05 Is Standalone and Speculative:**
+- Large to XL project with unique infrastructure needs (graph database)
+- Privacy and data access challenges significant
+- Could be fun and unique value-add, but question ROI
+- Good isolatable project for contractors if pursued
+- **Build only if strong ROI case**
+
+**Calendar Integration Shared:**
+- AD-01 uses same calendar integration as InvRel-01, InvRel-02, CA-01, CA-02
+- Opportunity for shared infrastructure across sections
+
+**Dashboard Tooling Is Critical Decision:**
+- Affects AD-04, InvRel-07, potentially OF-02
+- Evaluate Retool, Sigma Computing, Looker, Tableau before committing to custom build
+- Tool choice significantly impacts development time and maintenance
+
+### Critical Questions for All AD Projects
+
+1. **Document scope for AD-02/AD-03:** What documents in Egnyte should be included?
+2. **Dashboard tooling decision:** Custom build or leverage existing tools?
+3. **AD-05 ROI:** Is relationship mapping valuable enough to justify Large/XL investment?
+4. **Privacy policies:** What communication data can be accessed for AD-05?
+5. **AD-04 phasing:** What's the MVP? (Focus on specific executive queries first)
+
+### Recommended Implementation Sequence
+
+**Foundation (Part of IR-03 Document Repository):**
+1. **AD-03: Document Tagger** (Small-Medium) — First milestone of document repository
+   - Start with Egnyte uploads
+   - Build classification and tagging infrastructure
+   - Feeds into IR-03 RAG system
+
+**After IR-03 RAG Infrastructure:**
+2. **AD-02: Enterprise Search** (Medium) — Extend IR-03 to all documents
+   - Not standalone, feature of IR-03
+   - Broader document corpus beyond research
+
+**After Meeting Data Infrastructure:**
+3. **AD-01: Meeting Prep Automator** (Medium) — General meeting prep
+   - Consider sharing infrastructure with InvRel-02
+   - Requires structured meeting notes
+
+**Much Later (After Most Other Projects):**
+4. **AD-04: Executive Dashboard** (Large-XL) — Requires all foundational data infrastructure
+   - Build in phases: basic dashboard → domain chatbot → cross-functional
+   - Evaluate dashboard tooling options first
+   - **Build LAST** when data infrastructure mature
+
+**Question ROI First:**
+5. **AD-05: Relationship Mapper** (Large-XL) — Speculative, unique value proposition
+   - Assess ROI before committing
+   - Data access and privacy challenges significant
+   - Could be good contractor project if pursued
+
+### Strategic Notes
+
+**This Section Is About Integration:**
+- AD projects are cross-functional by nature
+- Most are extensions or aggregations of other sections' infrastructure
+- AD-02/AD-03 should be part of IR-03, not separate
+- AD-04 aggregates everything
+
+**AD-04 Is The Ultimate Dashboard:**
+- Requires virtually all other infrastructure to be valuable
+- Don't build early - wait until foundational data exists
+- Consider if simpler domain-specific dashboards provide more value
+- Dashboard tooling decision affects multiple projects
+
+**AD-05 Is High-Risk, High-Reward:**
+- Relationship mapping could be unique differentiator
+- Large/XL scope with data access challenges
+- Privacy considerations significant
+- Only build if strong ROI case can be made
+
+**Document Repository Is Central:**
+- AD-02 and AD-03 both relate to document management
+- Should be integrated with IR-03 document repository
+- Don't duplicate infrastructure
+
+**Calendar Integration Opportunities:**
+- Multiple sections need calendar integration (AD-01, InvRel-01/02, CA-01/02)
+- Build shared calendar framework once, reuse across sections
 
 ---

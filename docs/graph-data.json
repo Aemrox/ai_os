@@ -1,1 +1,83 @@
-{"nodes":[],"edges":[]}
+{
+  "nodes": [
+    {
+      "id": 1,
+      "change_id": "64b214ae-6357-46b7-b36f-178b8b17b914",
+      "node_type": "goal",
+      "title": "Reorganize AI Use Case Documentation - Extract Infrastructure Analysis",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-27T15:27:06.078521-05:00",
+      "updated_at": "2026-01-27T15:27:06.078521-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":90,\"prompt\":\"Implement the following plan:\\n\\n# Plan: Reorganize AI Use Case Documentation - Extract Infrastructure Analysis\\n\\n## Objective\\nReorganize the AI use case documentation by separating project descriptions from infrastructure/dependency analysis into two focused documents.\\n\\n## Current Status\\n- ✅ All 60 use cases have been sized with T-shirt estimates\\n- ✅ All 8 sections have \\\"Shared Infrastructure\\\" analysis sections\\n- ⏳ Need to reorganize into two documents:\\n  - **Document 1 (AI_use_cases_v2.md):** Concise project descriptions only\\n  - **Document 2 (NEW):** Comprehensive infrastructure, dependencies, and strategic roadmap\"}"
+    },
+    {
+      "id": 2,
+      "change_id": "2166f30f-6f8e-4fad-96d6-307a3d8ba6fd",
+      "node_type": "action",
+      "title": "Extract Shared Infrastructure sections from AI_use_cases_v2.md",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-27T15:33:37.457243-05:00",
+      "updated_at": "2026-01-27T15:33:37.457243-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":85}"
+    },
+    {
+      "id": 3,
+      "change_id": "7a4cdead-40a4-453d-b4a0-78dbed8e217d",
+      "node_type": "outcome",
+      "title": "Created comprehensive AI_infrastructure_and_roadmap.md with all sections",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-27T15:55:41.146666-05:00",
+      "updated_at": "2026-01-27T15:55:41.146666-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":95}"
+    },
+    {
+      "id": 4,
+      "change_id": "55c4e7f5-6128-4bc5-a4a8-4076337afd86",
+      "node_type": "outcome",
+      "title": "Successfully reorganized documentation into two focused documents",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-27T16:54:48.064023-05:00",
+      "updated_at": "2026-01-27T16:54:48.064023-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":95}"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1,
+      "from_node_id": 1,
+      "to_node_id": 2,
+      "from_change_id": "64b214ae-6357-46b7-b36f-178b8b17b914",
+      "to_change_id": "2166f30f-6f8e-4fad-96d6-307a3d8ba6fd",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Implementing goal by extracting infrastructure sections",
+      "created_at": "2026-01-27T15:34:19.544404-05:00"
+    },
+    {
+      "id": 2,
+      "from_node_id": 2,
+      "to_node_id": 3,
+      "from_change_id": "2166f30f-6f8e-4fad-96d6-307a3d8ba6fd",
+      "to_change_id": "7a4cdead-40a4-453d-b4a0-78dbed8e217d",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Successfully completed extraction and analysis",
+      "created_at": "2026-01-27T15:55:41.340676-05:00"
+    },
+    {
+      "id": 3,
+      "from_node_id": 1,
+      "to_node_id": 4,
+      "from_change_id": "64b214ae-6357-46b7-b36f-178b8b17b914",
+      "to_change_id": "55c4e7f5-6128-4bc5-a4a8-4076337afd86",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Goal achieved - documentation reorganized successfully",
+      "created_at": "2026-01-27T16:55:03.083144-05:00"
+    }
+  ]
+}
